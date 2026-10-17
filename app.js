@@ -1,68 +1,35 @@
-/* ---------------------------------------------------------------------------
-   Storage. Same async shape the app already expects, backed by the browser.
-   If the browser refuses, we keep a memory copy so the session still works,
-   but window.storage.blocked is set and the app says so on the home screen.
---------------------------------------------------------------------------- */
+/* Storage: the app's async shape, backed by the browser. If the browser refuses,
+   we keep a memory copy so the session works, but flag it so the app can say so. */
 (function () {
   var mem = {}, store = null;
-  try {
-    var probe = '__probe__';
-    localStorage.setItem(probe, '1');
-    localStorage.removeItem(probe);
-    store = localStorage;
-  } catch (e) { store = null; }
-
+  try { localStorage.setItem('__p__','1'); localStorage.removeItem('__p__'); store = localStorage; }
+  catch (e) { store = null; }
   window.storage = {
     blocked: !store,
-    get: function (k) {
-      return new Promise(function (res, rej) {
-        var v;
-        try { v = store ? store.getItem(k) : (k in mem ? mem[k] : null); }
-        catch (e) { return rej(e); }
-        if (v === null || v === undefined) rej(new Error('not found'));
-        else res({ key: k, value: v });
-      });
-    },
-    set: function (k, v) {
-      return new Promise(function (res, rej) {
-        try {
-          if (store) store.setItem(k, v);
-          mem[k] = String(v);
-          res({ key: k, value: v });
-        } catch (e) { mem[k] = String(v); rej(e); }
-      });
-    },
-    remove: function (k) {
-      return new Promise(function (res) {
-        try { if (store) store.removeItem(k); } catch (e) {}
-        delete mem[k];
-        res({ key: k, deleted: true });
-      });
-    },
-    list: function (p) {
-      return new Promise(function (res) {
-        var out = [], i, k;
-        try {
-          if (store) { for (i = 0; i < store.length; i++) { k = store.key(i); if (!p || k.indexOf(p) === 0) out.push(k); } }
-        } catch (e) {}
-        for (k in mem) if ((!p || k.indexOf(p) === 0) && out.indexOf(k) === -1) out.push(k);
-        res({ keys: out });
-      });
-    }
+    get: function (k) { return new Promise(function (res, rej) {
+      var v; try { v = store ? store.getItem(k) : (k in mem ? mem[k] : null); } catch (e) { return rej(e); }
+      if (v === null || v === undefined) rej(new Error('not found')); else res({ key: k, value: v }); }); },
+    set: function (k, v) { return new Promise(function (res, rej) {
+      try { if (store) store.setItem(k, v); mem[k] = String(v); res({ key: k, value: v }); }
+      catch (e) { mem[k] = String(v); rej(e); } }); },
+    remove: function (k) { return new Promise(function (res) {
+      try { if (store) store.removeItem(k); } catch (e) {} delete mem[k]; res({ key: k, deleted: true }); }); },
+    list: function (p) { return new Promise(function (res) {
+      var out = [], i, k;
+      try { if (store) { for (i = 0; i < store.length; i++) { k = store.key(i);
+        if (!p || k.indexOf(p) === 0) out.push(k); } } } catch (e) {}
+      for (k in mem) if ((!p || k.indexOf(p) === 0) && out.indexOf(k) === -1) out.push(k);
+      res({ keys: out }); }); }
   };
 })();
-
-/* Ask the browser not to evict us when space runs short. */
-try {
-  if (navigator.storage && navigator.storage.persist) {
-    navigator.storage.persisted().then(function (p) { if (!p) navigator.storage.persist(); });
-  }
-} catch (e) {}
+try { if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persisted().then(function (p) { if (!p) navigator.storage.persist(); }); } } catch (e) {}
 
 
 (function () {
   var STORE = 'training-entries-v2';
   var INTENT = 'training-intent-v3';
+  var VOL = 'training-vol-v1';
   var SEEDED = 'training-seeded-v2';
   var BACKUP = 'training-backup-v2';
   var diag = { state: 'ok', msg: '', keys: [], lastWrite: null, offerSeed: false };
@@ -79,104 +46,108 @@ try {
     climbing: {
       name: 'Climbing', colour: 'var(--climb)',
       blocks: [
-        { id: 'tb1', name: 'Training Block 1', target: 1, kind: 'all', children: [
+        { id: 'c1', name: 'Deadhangs + Light FB / Carry', target: 1, kind: 'all', children: [
           { id: 'wu-dh', name: 'Deadhangs 30/30', metric: 'reps', unit: 'hangs', timer: { work: 30, rest: 30, reps: 8, sets: 1, setRest: 0 } },
-          { id: 'wu-fbc', name: 'FB carry 10/15s', metric: 'reps', unit: 'carries', timer: { work: 10, rest: 15, reps: 6, sets: 1, setRest: 0 } }
+          { id: 'wu-fbc', name: 'FB carry', metric: 'reps', unit: 'carries', timer: { work: 10, rest: 15, reps: 6, sets: 1, setRest: 0 } }
         ]},
-        { id: 'tb2', name: 'Training Block 2', target: 1, kind: 'all', children: [
-          { id: 'wu-alt', name: 'Alt Arms', metric: 'reps', unit: 'hangs' },
-          { id: 'wu-fb', name: 'FB 7on, 33off, 3m rest', metric: 'reps', unit: 'hangs', timer: { work: 7, rest: 33, reps: 8, sets: 3, setRest: 180 } }
+        { id: 'c2', name: 'FB 7:33 + Alt Arms', target: 1, kind: 'all', children: [
+          { id: 'wu-fb', name: 'FB 7on, 33off, 3m rest', metric: 'reps', unit: 'hangs', timer: { work: 7, rest: 33, reps: 8, sets: 3, setRest: 180 } },
+          { id: 'wu-alt', name: 'Alt Arms', metric: 'reps', unit: 'hangs' }
         ]},
-        { id: 'wsk', name: 'Warmup while training a skill', target: 1, kind: 'all', children: [
-          { id: 'wu-skill', name: 'Warmup skill', metric: 'skill', unit: 'goes', note: 'heel, toe, inside flag, flag \u2014 or add your own' }
+        { id: 'c3', name: 'Warmup while training a skill', target: 1, kind: 'all', children: [
+          { id: 'wu-skill', name: 'Skill', metric: 'skill', unit: 'goes', note: 'heel, toe, flag, inside flag \u2014 or add your own' }
         ]},
         { id: 'end', name: 'Volume Endurance', target: 1, kind: 'pick', metricLabel: 'time on wall', children: [
           { id: 'end-a', name: 'Traverse Wall 3, 2, 1', metric: 'times' },
           { id: 'end-b', name: 'AB Super Light - Rainbow', metric: 'times' }
         ]},
-        { id: 'pe', name: 'Power Endurance', target: 1, kind: 'pick', metricLabel: 'volume', children: [
+        { id: 'pe', name: 'Power Endurance', target: 1, kind: 'pick', metricLabel: 'count per grade', children: [
           { id: 'pe-a', name: 'Circuit board', metric: 'volume', note: 'hard but not max' },
           { id: 'pe-d', name: 'AB 6b / 6b+ / 6c', metric: 'volume' },
           { id: 'pe-e', name: 'Lead 6a+ / 6b / 6b+', metric: 'volume' },
           { id: 'pe-b', name: 'Traverse, both walls', metric: 'volume', retired: true },
           { id: 'pe-c', name: 'Boulders level 5', metric: 'volume', retired: true }
         ]},
-        { id: 'sk', name: 'Max Skill', target: 1, kind: 'pick', metricLabel: 'good attempts', children: [
-          { id: 'sk-a', name: 'Boulder 6 / 7', metric: 'attempts' },
-          { id: 'sk-b', name: 'Lead 7a & +', metric: 'attempts' },
-          { id: 'sk-c', name: 'AB 7a & +', metric: 'attempts' }
-        ]}
+        { id: 'sk', name: 'Pushing Max Skill', target: 1, kind: 'pick', metricLabel: 'sent vs tried', children: [
+          { id: 'sk-a', name: 'Boulder 6 / 7', metric: 'sends' },
+          { id: 'sk-b', name: 'Lead 7a & +', metric: 'sends' },
+          { id: 'sk-c', name: 'AB 7a & +', metric: 'sends' }
+        ]},
       ]
     },
     gym: {
       name: 'Gym', colour: 'var(--gym)',
       blocks: [
-        { id: 'ab', name: 'Ab flow', target: 2, kind: 'all', children: [
-          { id: 'ab1', name: 'Lying leg raise', metric: 'reps', unit: 'reps', note: 'flat back, pelvic tilt' },
-          { id: 'ab2', name: 'Bird dogs', metric: 'reps', unit: 'reps' },
+        { id: 'ab', name: 'Ab Flow', target: 2, kind: 'all', children: [
+          { id: 'ab1', name: 'Lying down leg raise', metric: 'reps', unit: 'reps', note: 'flat back, pelvic tilt, play with leg positions' },
+          { id: 'ab4', name: 'Hanging leg raise', metric: 'reps', unit: 'reps' },
           { id: 'ab3', name: 'L-sit hold', metric: 'reps', unit: 'seconds', timer: { work: 20, rest: 40, reps: 5, sets: 1, setRest: 0 } },
-          { id: 'ab4', name: 'Hanging leg raise', metric: 'reps', unit: 'reps' }
+          { id: 'ab2', name: 'Bird dogs', metric: 'reps', unit: 'reps', retired: true }
         ]},
-        { id: 'up', name: 'Upper flow', target: 1, kind: 'all', children: [
-          { id: 'up1', name: 'Incline chest hold', metric: 'weight', note: '18kg, hold and press' },
-          { id: 'up2', name: 'Dip hold', metric: 'reps', unit: 'seconds', timer: { work: 20, rest: 40, reps: 5, sets: 1, setRest: 0 } },
-          { id: 'up3', name: 'Lat bench overhead', metric: 'weight' },
-          { id: 'up4', name: 'Side raises', metric: 'weight', note: 'standing, lying, knee up' },
-          { id: 'up5', name: 'Reverse wrist curl', metric: 'weight' },
-          { id: 'up6', name: 'Wrist curl', metric: 'weight' },
-          { id: 'up7', name: 'Wrist side twists', metric: 'reps', unit: 'reps', note: 'long stick' }
-        ]},
-        { id: 'lo1', name: 'Lower block 1', target: 1, kind: 'all', children: [
-          { id: 'lo1w', name: 'Single leg forward fold', metric: 'reps', unit: 'reps', note: 'warm-up' },
-          { id: 'lo1a', name: 'Single leg good mornings', metric: 'weight', note: 'crux, or deadlift' },
+        { id: 'lo1', name: 'Block 1', target: 1, kind: 'all', children: [
+          { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warmup \u2014 cross over, cable, mat or band' },
+          { id: 'lo1a', name: 'Single leg good mornings', metric: 'weight', note: 'crux \u2014 or deadlift' },
           { id: 'lo1b', name: 'Hip bench step down', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'lo2', name: 'Lower block 2', target: 1, kind: 'all', children: [
-          { id: 'lo2w', name: 'Leg swings and wide splits', metric: 'reps', unit: 'reps', note: 'warm-up' },
+        { id: 'lo2', name: 'Block 2', target: 1, kind: 'all', children: [
+          { id: 'lo2w', name: 'Leg swings and wide splits', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo2b', name: 'Cable hamstring eccentric', metric: 'weight', note: 'crux' },
           { id: 'lo2c', name: 'Hip flexor warrior pose', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'lo3', name: 'Lower block 3', target: 1, kind: 'all', children: [
-          { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warm-up, cable, mat or band' },
+        { id: 'lo3', name: 'Block 3', target: 1, kind: 'all', children: [
+          { id: 'lo1w', name: 'Single leg forward fold', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo3b', name: 'Single leg stand', metric: 'reps', unit: 'seconds', note: 'balance' },
           { id: 'lo3c', name: 'Single leg airplanes', metric: 'reps', unit: 'reps', note: 'balance' }
+        ]},
+        { id: 'uf1', name: 'Upper Flow 1 Chest', target: 1, kind: 'all', children: [
+          { id: 'up1', name: 'Incline chest + hold / dips + hold', metric: 'weight' },
+          { id: 'up8', name: 'Flys', metric: 'weight' },
+          { id: 'up9', name: 'Shoulder press', metric: 'weight' },
+          { id: 'up3', name: 'Lat bench overhead', metric: 'weight' },
+          { id: 'up2', name: 'Dip hold', metric: 'reps', unit: 'seconds', retired: true }
+        ]},
+        { id: 'uf2', name: 'Upper Flow 2 Climbing Optimiser', target: 1, kind: 'all', children: [
+          { id: 'up10', name: 'Reverse rows', metric: 'reps', unit: 'reps', note: 'on bar' },
+          { id: 'up4', name: 'Side raise knee up', metric: 'weight' },
+          { id: 'up5', name: 'Wrist curl reverse', metric: 'weight' },
+          { id: 'up6', name: 'Wrist curls', metric: 'weight' }
+        ]},
+        { id: 'uf3', name: 'Upper Flow 3 Pull', target: 1, kind: 'all', children: [
+          { id: 'up11', name: 'Pull ups / pull downs', metric: 'reps', unit: 'reps' },
+          { id: 'up12', name: 'Side raises lying on bench', metric: 'weight' },
+          { id: 'up7', name: 'Wrist side twists', metric: 'reps', unit: 'reps', note: 'long stick' }
         ]}
       ]
     },
-    stretching: {
-      name: 'Stretching', colour: 'var(--stretch)',
+    mobility: {
+      name: 'Mobility', colour: 'var(--stretch)',
       blocks: [
-        { id: 'st1', name: 'Inside hip', target: 1, kind: 'all', children: [
-          { id: 'st1a', name: 'Frog', metric: 'hold', note: '5m' }
+        { id: 'm1', name: 'Lower & Middle Back Mobility', target: 1, kind: 'all', children: [
+          { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'side twists \u00b7 foam roller \u00b7 arched back bikram style, standing, kneeling or sitting' }
         ]},
-        { id: 'st2', name: 'Inside outside and hamstring', target: 1, kind: 'all', children: [
-          { id: 'st2a', name: 'Wide splits, or wall wide splits', metric: 'hold', note: '5m, 3m' },
-          { id: 'st2b', name: 'Happy baby', metric: 'hold' },
-          { id: 'st2c', name: 'Pigeon pose, raised', metric: 'hold' },
-          { id: 'st2d', name: 'Figure 4', metric: 'hold', note: 'lying or sitting, 2m' }
+        { id: 'm2', name: 'Glutes / Arched Back', target: 1, kind: 'all', children: [
+          { id: 'm2a', name: 'Glutes / arched back', metric: 'hold', note: 'figure 4 \u00b7 pigeon raise \u00b7 figure 4 + foam \u00b7 sitting yogi style \u00b7 cross leg child pose' }
         ]},
-        { id: 'st3', name: 'Hip flexor', target: 1, kind: 'all', children: [
-          { id: 'st3a', name: 'Low lunge hold', metric: 'hold' },
-          { id: 'st3b', name: 'Low lunge, long splits on hamstring', metric: 'hold', note: '3m' }
+        { id: 'm3', name: 'Hamstring', target: 1, kind: 'all', children: [
+          { id: 'm3a', name: 'Hamstring', metric: 'hold', note: 'cork ball \u00b7 wide splits forward fold \u00b7 single leg forward fold \u00b7 jefferson curl \u00b7 forward fold long' }
         ]},
-        { id: 'st4', name: 'Hip flexor and quad', target: 1, kind: 'all', children: [
-          { id: 'st4a', name: 'Nordic hip flexor against wall', metric: 'hold', note: 'more quad, 2m' },
-          { id: 'st4b', name: 'Lizard pose with quad stretch', metric: 'hold' }
+        { id: 'm4', name: 'Inside / Outside Hip', target: 1, kind: 'all', children: [
+          { id: 'm4a', name: 'Inside / outside hip', metric: 'hold', note: 'happy baby \u00b7 frog lizard pose' }
         ]},
-        { id: 'st5', name: 'Arched back and hamstring mobility', target: 1, kind: 'all', children: [
-          { id: 'st5a', name: 'Jefferson ham curl', metric: 'hold', note: 'over an edge' },
-          { id: 'st5b', name: 'Single leg forward fold', metric: 'hold' },
-          { id: 'st5c', name: 'Childs pose', metric: 'hold', note: 'breaks up tightness in the glutes' }
+        { id: 'm5', name: 'Hip Flexor w/ Quad', target: 1, kind: 'all', children: [
+          { id: 'm5a', name: 'Hip flexor with quad', metric: 'hold', note: 'low lunge + quad \u00b7 nordic hip flexor \u00b7 sitting on legs leaning backwards' }
         ]},
-        { id: 'st6', name: 'Back mobility', target: 1, kind: 'all', children: [
-          { id: 'st6a', name: 'Foam roller below', metric: 'hold', note: '3m, 3m' },
-          { id: 'st6b', name: 'Arched back, bikram style', metric: 'hold', note: 'standing, kneeling or sitting' },
-          { id: 'st6c', name: 'Side back twists', metric: 'hold' }
-        ]},
-        { id: 'st7', name: 'Chest and shoulders', target: 1, kind: 'all', children: [
-          { id: 'st7a', name: 'Cactus arms on incline', metric: 'hold', note: '3m' },
-          { id: 'st7b', name: 'Bench with light weights', metric: 'hold' },
-          { id: 'st7c', name: 'Puppy pose', metric: 'hold' }
+        { id: 'm6', name: 'Chest / Shoulders', target: 1, kind: 'all', children: [
+          { id: 'm6a', name: 'Chest / shoulders', metric: 'hold', note: 'lying on one side upper chest \u00b7 bolster or cactus pose \u00b7 puppy pose \u00b7 weighted bench' }
+        ]}
+      ]
+    },
+    outdoor: {
+      name: 'Outdoor', colour: 'var(--outdoor)', untracked: true,
+      blocks: [
+        { id: 'out', name: 'Outdoor Climbing', kind: 'all', children: [
+          { id: 'out-f', name: 'Number of falls', metric: 'reps', unit: 'falls' },
+          { id: 'out-log', name: 'Session log', metric: 'note', note: 'what happened, how it felt' }
         ]}
       ]
     },
@@ -190,7 +161,6 @@ try {
       ]
     }
   };
-
   var PROMPTS = {
     climbing: ['Take 10 practice falls', 'Fall once before I feel ready',
       'Climb one route thinking only about feet', 'Place each foot once, no readjusting',
@@ -203,18 +173,35 @@ try {
   };
 
   var SEED = [
-    { leaf: 'wu-dh', date: '2026-09-04', v: { reps: '8' } },
-    { leaf: 'wu-dh', date: '2026-08-29', v: { reps: '8' } },
-    { leaf: 'wu-fb', date: '2026-09-07', v: { reps: '7, 6' } },
-    { leaf: 'wu-alt', date: '2026-09-07', v: { reps: '16, 16' } },
-    { leaf: 'wu-alt', date: '2026-08-29', v: { reps: '16, 16, 16' } },
-    { leaf: 'end-a', date: '2026-08-29', v: { times: '8.20, 5.20, 3.30' } },
-    { leaf: 'pe-d', date: '2026-09-02', v: { count: '7', grade: '6b' } },
-    { leaf: 'sk-a', date: '2026-08-31', v: { count: '10' } },
-    { leaf: 'up1', date: '2026-09-09', v: { weight: '18', reps: '8' } },
-    { leaf: 'up5', date: '2026-09-09', v: { weight: '10', reps: '12' } },
-    { leaf: 'end-a', date: '2026-09-15', v: { times: '13.30, 7.45, 4.45' }, at: 1 },
-    { leaf: 'pe-e', date: '2026-09-15', v: { count: '3', grade: '6b+' }, at: 2 }
+    // August
+    { leaf: 'wu-dh',   date: '2026-08-29', v: { reps: '8' }, at: 1 },
+    { leaf: 'end-a',   date: '2026-08-29', v: { times: '8.20, 5.20, 3.30' }, at: 2 },
+    // September
+    { leaf: 'pe-d',    date: '2026-09-02', v: { count: '7', grade: '6b' }, at: 1 },
+    { leaf: 'wu-dh',   date: '2026-09-04', v: { reps: '8' }, at: 1 },
+    { leaf: 'wu-fb',   date: '2026-09-07', v: { reps: '3, 8' }, at: 1 },
+    { leaf: 'wu-alt',  date: '2026-09-07', v: { reps: '16, 16' }, at: 2 },
+    { leaf: 'up1',     date: '2026-09-09', v: { weight: '18', reps: '8' }, at: 1 },
+    { leaf: 'up5',     date: '2026-09-09', v: { weight: '10', reps: '12' }, at: 2 },
+    { leaf: 'end-a',   date: '2026-09-15', v: { times: '13.30, 7.45, 4.45' }, at: 1 },
+    { leaf: 'pe-e',    date: '2026-09-15', v: { count: '3', grade: '6b+' }, at: 2 },
+    { leaf: 'end-b',   date: '2026-09-19', v: { times: '11.00, 9.00' }, at: 1 },
+    { leaf: 'end-b',   date: '2026-09-22', v: { times: '10.00, 10.00, 10.00' }, at: 1 },
+    { leaf: 'wu-fb',   date: '2026-09-24', v: { reps: '4, 2' }, at: 1 },
+    { leaf: 'end-b',   date: '2026-09-24', v: { times: '19.00' }, at: 2 },
+    { leaf: 'sk-c',    date: '2026-09-24', v: { sent: '0', tried: '2', grade: '7a', note: 'topped both, one fall' }, at: 3 },
+    { leaf: 'wu-fb',   date: '2026-09-29', v: { reps: '3, 4' }, at: 1 },
+    { leaf: 'end-a',   date: '2026-09-29', v: { times: '7.50' }, at: 2 },
+    { leaf: 'sk-b',    date: '2026-09-29', v: { sent: '0', tried: '1', grade: '7a', note: 'topped with 5 takes' }, at: 3 },
+    // October, outdoors
+    { leaf: 'out-log', date: '2026-10-04', v: { text: 'Outdoor 5+, could not do it clean. First climb, forgive yourself. 5+ clean after. 6a on top rope, nice.' }, at: 1 },
+    { leaf: 'out-log', date: '2026-10-05', v: { text: 'Started scared, took on an easy route. Decided to practise falls instead. Then used an ohm and did a 6a+ feeling chill. Happy.' }, at: 1 },
+    { leaf: 'pe-e',    date: '2026-10-09', v: { count: '2', grade: '6b' }, at: 1 },
+    { leaf: 'out-log', date: '2026-10-09', v: { text: 'Slow day at Itchy, taught a lot including cleaning. Much better the second time on the 6b.' }, at: 2 },
+    { leaf: 'sk-b',    date: '2026-10-10', v: { sent: '0', tried: '3', grade: '7a' }, at: 1 },
+    { leaf: 'out-log', date: '2026-10-10', v: { text: 'Morning at Seismico, 5+ with falls, 6a, tried 6c. Then Itchchu for the 7a, nowhere near. Should have stuck on the 6b and worked perfection on a medium-hard route.' }, at: 2 },
+    { leaf: 'out-log', date: '2026-10-15', v: { text: 'Tallat, roig, Emo. Got lost, did not read the instructions properly. Eventually got a climb and practised falling high on a 5c. Good route.' }, at: 1 },
+    { leaf: 'out-log', date: '2026-10-16', v: { text: 'Tallat, roig, Dalma. Aim was to fall 10x and work a 6b/+ three or four times really clean. The 6b after the warm up was impossible. Three hours on the first three clips, did not have it in me to finish.' }, at: 1 }
   ];
 
   var entries = [];
@@ -271,6 +258,7 @@ try {
     return best;
   }
   function urgency(days, target) {
+    if (!target) return -1;              // unscheduled: never competes for attention
     if (days === null) return 1e6;
     return days / (7 / target);
   }
@@ -315,14 +303,26 @@ try {
       return h.reduce(function (a, b) { return a + b; }, 0) + ' min held';
     }
     if (leaf.metric === 'volume') { return (nums(v.count)[0] || 0) + ' total'; }
+    if (leaf.metric === 'sends') { return sentOf(v) + ' of ' + triedOf(v) + ' sent'; }
     if (leaf.metric === 'attempts') { return (nums(v.count)[0] || 0) + ' tries'; }
     return null;
+  }
+
+  function sentOf(v) { return nums(v.sent)[0] || 0; }
+  function triedOf(v) {
+    var t = nums(v.tried)[0];
+    if (t === undefined) t = nums(v.count)[0];   // entries logged before sends existed
+    return t || 0;
   }
 
   function raw(leaf, v) {
     if (leaf.metric === 'times') return String(v.times).split(',').map(function (x) { return x.trim(); }).join(' / ');
     if (leaf.metric === 'volume') return v.count + ' \u00d7 ' + (v.grade || '\u2014');
     if (leaf.metric === 'attempts') return v.count + ' tries';
+    if (leaf.metric === 'sends') return sentOf(v) + ' clean / ' + triedOf(v) + ' tried' +
+      (v.grade ? ' \u00b7 ' + v.grade : '') + (v.note ? ' \u00b7 ' + v.note : '');
+    if (leaf.metric === 'note') return (v.text || '').replace(/\s+/g, ' ').slice(0, 80) +
+      ((v.text || '').length > 80 ? '\u2026' : '');
     if (leaf.metric === 'reps') return v.reps;
     if (leaf.metric === 'skill') return (v.skill || '?') + ' — ' + v.reps;
     if (leaf.metric === 'hold') return String(v.mins).split(',').map(function (x) { return x.trim() + 'm'; }).join(' / ');
@@ -346,12 +346,81 @@ try {
     if (mt === 'hold') return sum(v.mins) + ' min';
     if (mt === 'volume') return v.count + ' \u00d7 ' + (v.grade || '\u2014');
     if (mt === 'attempts') return v.count + ' tries';
+    if (mt === 'sends') return sentOf(v) + '/' + triedOf(v);
+    if (mt === 'note') return 'logged';
     if (mt === 'weight') return (v.weight ? v.weight + 'kg' : '') + (v.reps ? ' \u00d7 ' + v.reps : '');
     if (mt === 'run') {
       var dd = parseFloat(v.distance) || 0, tt = secs(v.time);
       return dd && tt ? fmtMin(Math.round(tt / dd)) + ' /km' : (v.distance || '') + 'km';
     }
     return '\u2014';
+  }
+
+  function spark(leaf, w, h) {
+    var es = entriesFor(leaf.id).slice(0, 12).reverse();
+    if (es.length < 2) return '';
+    var vals = es.map(function (e) { return score(leaf, e); });
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    var span = (hi - lo) || 1;
+    var pts = vals.map(function (v, i) {
+      var x = (i / (vals.length - 1)) * (w - 5) + 2.5;
+      var y = (h - 3) - ((v - lo) / span) * (h - 6);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    });
+    var last = pts[pts.length - 1].split(',');
+    return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">' +
+      '<polyline points="' + pts.join(' ') + '" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.75"/>' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2.6" fill="currentColor"/></svg>';
+  }
+
+  function gradeTally(leaf) {
+    var tally = {}, order = [];
+    entriesFor(leaf.id).forEach(function (e) {
+      var g = (e.v.grade || '').trim();
+      if (!g) return;
+      var n = leaf.metric === 'sends' ? sentOf(e.v) : (nums(e.v.count)[0] || 0);
+      if (!tally[g]) { tally[g] = 0; order.push(g); }
+      tally[g] += n;
+    });
+    order.sort();
+    return order.map(function (g) { return { grade: g, n: tally[g] }; });
+  }
+
+  function progress(leaf) {
+    var es = entriesFor(leaf.id);
+    if (!es.length) return '';
+    var h = '<div class="prog">';
+    var sv = spark(leaf, 220, 34);
+    if (sv) {
+      var first = es[es.length - 1], last = es[0];
+      var up = score(leaf, last) - score(leaf, first);
+      h += '<div class="prog-top"><div class="prog-spark">' + sv + '</div>' +
+        '<div class="prog-n">' + es.length + ' session' + (es.length === 1 ? '' : 's') +
+        '<small>since ' + shortDate(first.date) + '</small></div></div>';
+      if (leaf.metric !== 'note' && es.length > 1) {
+        h += '<div class="prog-line">' + (up > 0 ? '\u2191 up' : up < 0 ? '\u2193 down' : 'level') +
+          ' on your first \u00b7 best ' + esc(brief(leaf, bestEntry(leaf.id))) + '</div>';
+      }
+    }
+    var gt = gradeTally(leaf);
+    if (gt.length) {
+      h += '<div class="prog-line">' + gt.map(function (x) {
+        return '<b>' + esc(x.grade) + '</b> \u00d7' + x.n;
+      }).join(' &nbsp; ') + '</div>';
+    }
+    if (leaf.metric === 'sends') {
+      var sent = 0, tried = 0;
+      es.forEach(function (e) { sent += sentOf(e.v); tried += triedOf(e.v); });
+      h += '<div class="prog-line">' + sent + ' clean from ' + tried + ' tries' +
+        (tried ? ' \u00b7 ' + Math.round(sent / tried * 100) + '%' : '') + '</div>';
+    }
+    return h + '</div>';
+  }
+
+  function shortDate(iso) {
+    var d = new Date(iso + 'T00:00:00');
+    return d.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
   }
 
   function recap(d) {
@@ -383,7 +452,8 @@ try {
       return r + (d && s ? ' \u00b7 ' + fmtMin(s) + ' \u00b7 ' + d + 'km' : '');
     }
     if (!t) return r;
-    if (leaf.metric === 'volume' || leaf.metric === 'attempts') return r;
+    if (leaf.metric === 'volume' || leaf.metric === 'attempts' ||
+        leaf.metric === 'sends' || leaf.metric === 'note') return r;
     var multi = (leaf.metric === 'reps' || leaf.metric === 'skill' ? nums(e.v.reps).length : leaf.metric === 'hold' ? nums(e.v.mins).length :
       String(e.v.times || '').split(',').filter(function (x) { return x.trim(); }).length) > 1;
     return multi ? r + ' \u00b7 ' + t : r;
@@ -393,6 +463,8 @@ try {
     var v = e.v;
     if (leaf.metric === 'times') return String(v.times || '').split(',').reduce(function (a, x) { return x.trim() ? a + secs(x) : a; }, 0);
     if (leaf.metric === 'volume' || leaf.metric === 'attempts') return nums(v.count)[0] || 0;
+    if (leaf.metric === 'sends') return sentOf(v) * 1000 + triedOf(v);
+    if (leaf.metric === 'note') return 0;
     if (leaf.metric === 'reps' || leaf.metric === 'skill') return nums(v.reps).reduce(function (a, b) { return a + b; }, 0);
     if (leaf.metric === 'hold') return nums(v.mins).reduce(function (a, b) { return a + b; }, 0);
     if (leaf.metric === 'weight') return (parseFloat(v.weight) || 0) * 100 + (parseFloat(v.reps) || 0);
@@ -477,6 +549,8 @@ try {
       safeSet(BACKUP, JSON.stringify(entries));
     }
 
+    var vv = await tryGet(VOL);
+    if (vv !== undefined && vv !== null) { var n = parseInt(vv, 10); if (n >= 0 && n < 4) volIx = n; }
     var iv = await tryGet(INTENT);
     if (iv) { try { intents = JSON.parse(iv) || {}; } catch (err) { intents = {}; } }
     render();
@@ -568,11 +642,12 @@ try {
     Object.keys(DATA).forEach(function (d) {
       var next = discNextUp(d);
       var days = daysSince(discLastDate(d));
-      var urgent = days === null || urgency(daysSince(blockLastDate(next)), next.target) >= 1;
+      var urgent = !DATA[d].untracked &&
+        (days === null || urgency(daysSince(blockLastDate(next)), next.target) >= 1);
       h += '<button class="row' + (urgent ? ' urgent' : '') + '" data-go="blocks" data-disc="' + d + '">' +
         '<div class="row-main"><div class="row-title">' + DATA[d].name + '</div>' +
-        '<div class="row-sub">' + esc(next.name.toLowerCase()) + '</div></div>' +
-        daysCell(days) + '</button>';
+        '<div class="row-sub">' + esc(DATA[d].untracked ? 'whenever you get out' : next.name.toLowerCase()) +
+        '</div></div>' + daysCell(days) + '</button>';
     });
     h += viewDays();
     h += '<button class="row" data-go="data" style="min-height:52px">' +
@@ -580,9 +655,8 @@ try {
       '<div class="row-sub">' + entries.length + ' entries \u00b7 export a copy</div></div></button>';
     if (diag.ephemeral) {
       h = '<div class="warnbox bad" style="margin-top:16px"><b>Nothing is being saved.</b> ' +
-        'This browser is refusing storage \u2014 it may be in private mode, or out of space. ' +
-        'Anything you log will vanish when you close the app. Export from Data and backup before you do.' +
-        '</div>' + h;
+        'This browser is refusing storage \u2014 private mode, or out of space. Anything you log ' +
+        'will vanish when you close the app. Export from Data and backup before you do.</div>' + h;
     }
     if (diag.state === 'error') {
       h = '<div class="warnbox bad" style="margin-top:16px">' + esc(diag.msg) +
@@ -675,8 +749,11 @@ try {
   }
 
   function intentBanner() {
-    var t = state.disc ? getIntent(state.disc) : '';
-    if (!t) return '';
+    if (state.disc !== 'climbing') return '';
+    var t = getIntent(state.disc);
+    if (!t) return '<button class="banner banner-empty" data-go="intent-edit">' +
+      '<div class="banner-k">Today\u2019s intention</div>' +
+      '<div class="banner-t">Tap to set one before you start</div></button>';
     return '<button class="banner" data-go="intent-edit"><div class="banner-k">Today\u2019s intention</div>' +
       '<div class="banner-t">' + esc(t) + '</div></button>';
   }
@@ -688,8 +765,10 @@ try {
     var next = discNextUp(d);
     DATA[d].blocks.forEach(function (b) {
       var days = daysSince(blockLastDate(b));
-      var urgent = b.id === next.id && (days === null || urgency(days, b.target) >= 1);
-      var sub = b.target > 1 ? 'target ' + b.target + '\u00d7 a week' : 'target weekly';
+      var urgent = !DATA[d].untracked && b.id === next.id &&
+        (days === null || urgency(days, b.target) >= 1);
+      var sub = !b.target ? 'no schedule' :
+        b.target > 1 ? 'target ' + b.target + '\u00d7 a week' : 'target weekly';
       if (b.metricLabel) sub = b.metricLabel + ' \u00b7 ' + sub;
       h += '<button class="row' + (urgent ? ' urgent' : '') + '" data-go="list" data-block="' + b.id + '">' +
         '<div class="row-main"><div class="row-title">' + esc(b.name) + '</div>' +
@@ -738,6 +817,15 @@ try {
     if (m === 'volume') return '<div class="field"><label>How many</label><input id="f-count" inputmode="numeric" placeholder="7"></div>' +
       '<div class="field"><label>Grade</label><input id="f-grade" placeholder="6b+"></div>';
     if (m === 'attempts') return '<div class="field"><label>Good attempts</label><input id="f-count" inputmode="numeric" placeholder="10"></div>';
+    if (m === 'sends') return '<div class="pair">' +
+      '<div class="field"><label>Sent clean</label><input id="f-sent" inputmode="numeric" placeholder="0"></div>' +
+      '<div class="field"><label>Tried</label><input id="f-tried" inputmode="numeric" placeholder="4"></div></div>' +
+      '<div class="field"><label>Grade, optional</label><input id="f-grade" placeholder="7a"></div>' +
+      '<div class="hint">Clean means no takes and no falls. Topping it with a rest is a try, not a send.</div>' +
+      '<div class="field" style="padding-top:14px"><label>Note, optional</label>' +
+      '<input id="f-note" placeholder="fell at the third clip"></div>';
+    if (m === 'note') return '<div class="field"><label>What happened</label>' +
+      '<textarea id="f-text" rows="5" placeholder="Tallat. Worked the first three clips. Fear on the top section."></textarea></div>';
     if (m === 'reps') return '<div class="field"><label>' + (leaf.unit === 'seconds' ? 'Seconds held, per set' : 'Reps or hangs, per set') + '</label>' +
       '<input id="f-reps" inputmode="decimal" placeholder="8   or   16, 16, 16"><div class="total" id="live"></div>' +
       '<div class="hint">Comma-separate sets and they add up for you.</div></div>';
@@ -767,6 +855,12 @@ try {
     if (m === 'times') { v.times = g('f-times'); if (!v.times) return null; }
     else if (m === 'volume') { v.count = g('f-count'); v.grade = g('f-grade'); if (!v.count) return null; }
     else if (m === 'attempts') { v.count = g('f-count'); if (!v.count) return null; }
+    else if (m === 'sends') {
+      v.sent = g('f-sent') || '0'; v.tried = g('f-tried');
+      v.grade = g('f-grade'); v.note = g('f-note');
+      if (!v.tried) return null;
+    }
+    else if (m === 'note') { v.text = g('f-text'); if (!v.text) return null; }
     else if (m === 'reps') { v.reps = g('f-reps'); if (!v.reps) return null; }
     else if (m === 'hold') { v.mins = g('f-mins'); if (!v.mins) return null; }
     else if (m === 'skill') {
@@ -789,6 +883,7 @@ try {
     h += '<div class="lb"><div class="lb-cell"><div class="lb-k">Last</div><div class="lb-v">' +
       (last ? esc(describe(leaf, last)) + '</div><div class="lb-k" style="margin-top:5px">' + daysSince(last.date) + ' days ago' : '\u2014') + '</div></div>';
     h += '<div class="lb-cell"><div class="lb-k">Best</div><div class="lb-v">' + (best ? esc(describe(leaf, best)) : '\u2014') + '</div></div></div>';
+    h += progress(leaf);
     h += fieldsFor(leaf);
     h += '<div class="when"><label for="f-date">When</label>' +
       '<input type="date" id="f-date" value="' + dstr(today()) + '" max="' + dstr(today()) + '"></div>';
@@ -816,13 +911,18 @@ try {
       '</div>' +
       '<div class="clock" id="clock">' + t.work + '</div>' +
       '<div class="phase" id="phase">Ready \u2014 ' + t.reps + ' reps' + (t.sets > 1 ? ', ' + t.sets + ' sets' : '') + '</div>' +
-      '<div class="tctl"><button id="t-go">Start</button><button id="t-reset">Reset</button></div>';
+      '<div class="tctl"><button id="t-go">Start</button><button id="t-add">+30s rest</button>' +
+      '<button id="t-reset">Reset</button></div>';
   }
   function timerHTML(leaf) {
     return '<div class="timer">' +
       '<div class="timer-head"><div class="timer-title">Timer</div>' +
       '<div class="switch"><button data-mode="interval" class="on">Intervals</button><button data-mode="stop">Stopwatch</button></div></div>' +
       '<div id="tbody">' + intervalBody(leaf) + '</div>' +
+      '<div class="volrow"><span>Beep</span><div class="switch" id="volsw">' +
+      VOLS.map(function (v, i) {
+        return '<button data-vol="' + i + '"' + (i === volIx ? ' class="on"' : '') + '>' + v[0] + '</button>';
+      }).join('') + '</div></div>' +
       '<div class="warnbar">The screen stays on while a timer runs. If you hear nothing, turn the media volume up \u2014 the beep plays as media, not as a ringtone.</div>' +
       '</div>';
   }
@@ -835,6 +935,8 @@ try {
     } catch (err) {}
   }
   var actx = null;
+  var VOLS = [['Off', 0], ['Low', 0.3], ['Mid', 0.6], ['Loud', 1.0]];
+  var volIx = 2;
   function unlockAudio() {
     try {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -845,19 +947,24 @@ try {
   }
   function beep(freq, dur) {
     try {
+      if (!VOLS[volIx][1]) return;
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-      if (actx.state === 'suspended') actx.resume();
       var o = actx.createOscillator(), g = actx.createGain();
       o.connect(g); g.connect(actx.destination);
-      o.frequency.value = freq; o.type = 'sine';
-      g.gain.setValueAtTime(0.25, actx.currentTime);
+      o.frequency.value = freq;
+      o.type = volIx >= 2 ? 'square' : 'sine';
+      g.gain.setValueAtTime(0.25 * VOLS[volIx][1], actx.currentTime);
       g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
       o.start(); o.stop(actx.currentTime + dur);
     } catch (err) {}
   }
-  function buzz(pattern) {
-    try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (err) {}
+  function unlockAudio_() {
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+    } catch (err) {}
   }
+  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
   function stopTimer() {
     if (timer && timer.h) clearInterval(timer.h);
     timer = null;
@@ -949,7 +1056,7 @@ try {
     el.innerHTML = '<div class="wrap">' + top +
       (state.toast ? '<div class="toast">' + esc(state.toast) + '</div>' : '') +
       (state.cal ? calPanel() : '') +
-      (['blocks', 'list', 'entry'].indexOf(state.view) !== -1 ? intentBanner() : '') +
+      (state.disc === 'climbing' && ['blocks', 'list', 'entry'].indexOf(state.view) !== -1 ? intentBanner() : '') +
       body + '</div>';
     state.toast = null;
     wire();
@@ -980,12 +1087,9 @@ try {
         var go = btn.getAttribute('data-go');
         if (go === 'blocks') {
           state.disc = btn.getAttribute('data-disc');
-          if (!getIntent(state.disc)) { state.view = 'intent'; }
-          else {
-            var bl = DATA[state.disc].blocks;
-            if (bl.length === 1) { state.block = bl[0].id; state.view = 'list'; }
-            else state.view = 'blocks';
-          }
+          var bl = DATA[state.disc].blocks;
+          if (bl.length === 1) { state.block = bl[0].id; state.view = 'list'; }
+          else state.view = 'blocks';
         }
         else if (go === 'intent-edit') { state.view = 'intent'; }
         else if (go === 'list') { state.block = btn.getAttribute('data-block'); state.view = 'list'; }
@@ -1114,6 +1218,23 @@ try {
         else startInterval();
       }
     };
+    var add = document.getElementById('t-add');
+    if (add) add.onclick = function () {
+      if (!timer || timer.mode !== 'interval') return;
+      timer.end += 30000;
+      var cur = timer.seq[timer.i];
+      if (cur) cur.d += 30;
+      tickInterval();
+    };
+    document.querySelectorAll('[data-vol]').forEach(function (b) {
+      b.onclick = async function () {
+        volIx = parseInt(b.getAttribute('data-vol'), 10);
+        document.querySelectorAll('[data-vol]').forEach(function (x) { x.className = ''; });
+        b.className = 'on';
+        if (VOLS[volIx][1]) { unlockAudio_(); beep(880, 0.12); }
+        await safeSet(VOL, String(volIx));
+      };
+    });
     if (rs) rs.onclick = function () { stopTimer(); render(); };
   }
 
