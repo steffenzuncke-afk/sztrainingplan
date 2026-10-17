@@ -696,7 +696,14 @@ try { if (navigator.storage && navigator.storage.persist) {
         if (!leaf) return;
         var best = bestEntry(e.leaf);
         var isBest = best && best.id === e.id;
-        h += '<div class="log"><div class="dot" style="background:' + DATA[DISC[e.leaf]].colour + '"></div>' +
+        var dot = '<div class="dot" style="background:' + DATA[DISC[e.leaf]].colour + '"></div>';
+        if (leaf.metric === 'note') {
+          h += '<div class="log log-stack">' + dot +
+            '<div class="log-body"><div class="log-n">' + esc(leaf.name) + '</div>' +
+            '<div class="log-text">' + esc(e.v.text || '') + '</div></div></div>';
+          return;
+        }
+        h += '<div class="log">' + dot +
           '<div class="log-n">' + esc(leaf.name) + '</div>' +
           '<div class="log-v">' + esc(describe(leaf, e)) + '<small>' +
           (isBest ? 'best ever' : 'best ' + esc(describe(leaf, best))) + '</small></div></div>';
