@@ -35,7 +35,7 @@ try { if (navigator.storage && navigator.storage.persist) {
   var diag = { state: 'ok', msg: '', keys: [], lastWrite: null, offerSeed: false };
 
   async function seedNow() {
-    entries = SEED.map(function (x, i) { return { id: 'seed' + i, leaf: x.leaf, date: x.date, v: x.v, at: x.at || i }; });
+    entries = SEED.map(function (x, i) { return { id: x.id || ('seed' + i), leaf: x.leaf, date: x.date, v: x.v, at: x.at || i }; });
     await safeSet(STORE, JSON.stringify(entries));
     await safeSet(SEEDED, 'yes');
     diag.state = 'ok'; diag.offerSeed = false;
@@ -55,7 +55,7 @@ try { if (navigator.storage && navigator.storage.persist) {
           { id: 'wu-alt', name: 'Alt Arms', metric: 'reps', unit: 'hangs' }
         ]},
         { id: 'c3', name: 'Warmup while training a skill', target: 1, kind: 'all', children: [
-          { id: 'wu-skill', name: 'Skill', metric: 'skill', unit: 'goes', note: 'heel, toe, flag, inside flag \u2014 or add your own' }
+          { id: 'wu-skill', name: 'Skill', metric: 'skill', unit: 'goes', note: 'heel, toe, flag, inside flag — or add your own' }
         ]},
         { id: 'end', name: 'Volume Endurance', target: 1, kind: 'pick', metricLabel: 'time on wall', children: [
           { id: 'end-a', name: 'Traverse Wall 3, 2, 1', metric: 'times' },
@@ -72,47 +72,47 @@ try { if (navigator.storage && navigator.storage.persist) {
           { id: 'sk-a', name: 'Boulder 6 / 7', metric: 'sends' },
           { id: 'sk-b', name: 'Lead 7a & +', metric: 'sends' },
           { id: 'sk-c', name: 'AB 7a & +', metric: 'sends' }
-        ]},
+        ]}
       ]
     },
     gym: {
       name: 'Gym', colour: 'var(--gym)',
       blocks: [
         { id: 'ab', name: 'Ab Flow', target: 2, kind: 'all', children: [
-          { id: 'ab1', name: 'Lying down leg raise', metric: 'reps', unit: 'reps', note: 'flat back, pelvic tilt, play with leg positions' },
+          { id: 'ab1', name: 'Lying down leg raise', metric: 'reps', unit: 'reps', note: 'flat back, pelvic tilt — play with leg positions' },
           { id: 'ab4', name: 'Hanging leg raise', metric: 'reps', unit: 'reps' },
           { id: 'ab3', name: 'L-sit hold', metric: 'reps', unit: 'seconds', timer: { work: 20, rest: 40, reps: 5, sets: 1, setRest: 0 } },
           { id: 'ab2', name: 'Bird dogs', metric: 'reps', unit: 'reps', retired: true }
         ]},
-        { id: 'lo1', name: 'Block 1', target: 1, kind: 'all', children: [
-          { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warmup \u2014 cross over, cable, mat or band' },
-          { id: 'lo1a', name: 'Single leg good mornings', metric: 'weight', note: 'crux \u2014 or deadlift' },
+        { id: 'gm', name: 'Good Mornings', target: 1, kind: 'all', children: [
+          { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warmup — cross over, cable, mat or band' },
+          { id: 'lo1a', name: 'Single leg good mornings', metric: 'weight', note: 'crux — or deadlift' },
           { id: 'lo1b', name: 'Hip bench step down', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'lo2', name: 'Block 2', target: 1, kind: 'all', children: [
+        { id: 'ch', name: 'Cable Ham', target: 1, kind: 'all', children: [
           { id: 'lo2w', name: 'Leg swings and wide splits', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo2b', name: 'Cable hamstring eccentric', metric: 'weight', note: 'crux' },
           { id: 'lo2c', name: 'Hip flexor warrior pose', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'lo3', name: 'Block 3', target: 1, kind: 'all', children: [
+        { id: 'sl', name: 'Single Leg', target: 1, kind: 'all', children: [
           { id: 'lo1w', name: 'Single leg forward fold', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo3b', name: 'Single leg stand', metric: 'reps', unit: 'seconds', note: 'balance' },
           { id: 'lo3c', name: 'Single leg airplanes', metric: 'reps', unit: 'reps', note: 'balance' }
         ]},
-        { id: 'uf1', name: 'Upper Flow 1 Chest', target: 1, kind: 'all', children: [
+        { id: 'uf1', name: 'Chest', target: 1, kind: 'all', children: [
           { id: 'up1', name: 'Incline chest + hold / dips + hold', metric: 'weight' },
           { id: 'up8', name: 'Flys', metric: 'weight' },
           { id: 'up9', name: 'Shoulder press', metric: 'weight' },
           { id: 'up3', name: 'Lat bench overhead', metric: 'weight' },
           { id: 'up2', name: 'Dip hold', metric: 'reps', unit: 'seconds', retired: true }
         ]},
-        { id: 'uf2', name: 'Upper Flow 2 Climbing Optimiser', target: 1, kind: 'all', children: [
+        { id: 'uf2', name: 'Climbing Optimiser', target: 1, kind: 'all', children: [
           { id: 'up10', name: 'Reverse rows', metric: 'reps', unit: 'reps', note: 'on bar' },
           { id: 'up4', name: 'Side raise knee up', metric: 'weight' },
           { id: 'up5', name: 'Wrist curl reverse', metric: 'weight' },
           { id: 'up6', name: 'Wrist curls', metric: 'weight' }
         ]},
-        { id: 'uf3', name: 'Upper Flow 3 Pull', target: 1, kind: 'all', children: [
+        { id: 'uf3', name: 'Pull', target: 1, kind: 'all', children: [
           { id: 'up11', name: 'Pull ups / pull downs', metric: 'reps', unit: 'reps' },
           { id: 'up12', name: 'Side raises lying on bench', metric: 'weight' },
           { id: 'up7', name: 'Wrist side twists', metric: 'reps', unit: 'reps', note: 'long stick' }
@@ -123,22 +123,40 @@ try { if (navigator.storage && navigator.storage.persist) {
       name: 'Mobility', colour: 'var(--stretch)',
       blocks: [
         { id: 'm1', name: 'Lower & Middle Back Mobility', target: 1, kind: 'all', children: [
-          { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'side twists \u00b7 foam roller \u00b7 arched back bikram style, standing, kneeling or sitting' }
+          { id: 'mb-twist', name: 'Side twists', metric: 'hold' },
+          { id: 'mb-foam', name: 'Foam roller', metric: 'hold' },
+          { id: 'mb-arch', name: 'Arched back, bikram style', metric: 'hold', note: 'back and sides — standing, on knees or sitting' },
+          { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
         { id: 'm2', name: 'Glutes / Arched Back', target: 1, kind: 'all', children: [
-          { id: 'm2a', name: 'Glutes / arched back', metric: 'hold', note: 'figure 4 \u00b7 pigeon raise \u00b7 figure 4 + foam \u00b7 sitting yogi style \u00b7 cross leg child pose' }
+          { id: 'gl-fig4', name: 'Figure 4', metric: 'hold' },
+          { id: 'gl-pigeon', name: 'Pigeon raise', metric: 'hold' },
+          { id: 'gl-fig4foam', name: 'Figure 4 + foam', metric: 'hold' },
+          { id: 'gl-yogi', name: 'Sitting yogi style', metric: 'hold' },
+          { id: 'gl-child', name: 'Cross leg child pose', metric: 'hold' },
+          { id: 'm2a', name: 'Glutes / arched back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
         { id: 'm3', name: 'Hamstring', target: 1, kind: 'all', children: [
-          { id: 'm3a', name: 'Hamstring', metric: 'hold', note: 'cork ball \u00b7 wide splits forward fold \u00b7 single leg forward fold \u00b7 jefferson curl \u00b7 forward fold long' }
+          { id: 'hm-cork', name: 'Cork ball', metric: 'hold', note: 'use it more, it gives a lot' },
+          { id: 'hm-wide', name: 'Wide splits forward fold', metric: 'hold' },
+          { id: 'hm-single', name: 'Single leg forward fold', metric: 'hold' },
+          { id: 'hm-jeff', name: 'Jefferson curl', metric: 'hold' },
+          { id: 'hm-long', name: 'Forward fold long', metric: 'hold' }
         ]},
         { id: 'm4', name: 'Inside / Outside Hip', target: 1, kind: 'all', children: [
-          { id: 'm4a', name: 'Inside / outside hip', metric: 'hold', note: 'happy baby \u00b7 frog lizard pose' }
+          { id: 'ih-baby', name: 'Happy baby', metric: 'hold' },
+          { id: 'ih-frog', name: 'Frog lizard pose', metric: 'hold' }
         ]},
         { id: 'm5', name: 'Hip Flexor w/ Quad', target: 1, kind: 'all', children: [
-          { id: 'm5a', name: 'Hip flexor with quad', metric: 'hold', note: 'low lunge + quad \u00b7 nordic hip flexor \u00b7 sitting on legs leaning backwards' }
+          { id: 'hq-lunge', name: 'Low lunge + quad', metric: 'hold' },
+          { id: 'hq-nordic', name: 'Nordic hip flexor', metric: 'hold' },
+          { id: 'hq-sit', name: 'Sitting on legs, leaning backwards', metric: 'hold' }
         ]},
         { id: 'm6', name: 'Chest / Shoulders', target: 1, kind: 'all', children: [
-          { id: 'm6a', name: 'Chest / shoulders', metric: 'hold', note: 'lying on one side upper chest \u00b7 bolster or cactus pose \u00b7 puppy pose \u00b7 weighted bench' }
+          { id: 'cs-side', name: 'Lying on one side', metric: 'hold', note: 'upper chest' },
+          { id: 'cs-bolster', name: 'Bolster stretch / cactus pose', metric: 'hold' },
+          { id: 'cs-puppy', name: 'Puppy pose', metric: 'hold' },
+          { id: 'cs-bench', name: 'Weighted bench', metric: 'hold' }
         ]}
       ]
     },
@@ -173,35 +191,42 @@ try { if (navigator.storage && navigator.storage.persist) {
   };
 
   var SEED = [
-    // August
-    { leaf: 'wu-dh',   date: '2026-08-29', v: { reps: '8' }, at: 1 },
-    { leaf: 'end-a',   date: '2026-08-29', v: { times: '8.20, 5.20, 3.30' }, at: 2 },
-    // September
-    { leaf: 'pe-d',    date: '2026-09-02', v: { count: '7', grade: '6b' }, at: 1 },
-    { leaf: 'wu-dh',   date: '2026-09-04', v: { reps: '8' }, at: 1 },
-    { leaf: 'wu-fb',   date: '2026-09-07', v: { reps: '3, 8' }, at: 1 },
-    { leaf: 'wu-alt',  date: '2026-09-07', v: { reps: '16, 16' }, at: 2 },
-    { leaf: 'up1',     date: '2026-09-09', v: { weight: '18', reps: '8' }, at: 1 },
-    { leaf: 'up5',     date: '2026-09-09', v: { weight: '10', reps: '12' }, at: 2 },
-    { leaf: 'end-a',   date: '2026-09-15', v: { times: '13.30, 7.45, 4.45' }, at: 1 },
-    { leaf: 'pe-e',    date: '2026-09-15', v: { count: '3', grade: '6b+' }, at: 2 },
-    { leaf: 'end-b',   date: '2026-09-19', v: { times: '11.00, 9.00' }, at: 1 },
-    { leaf: 'end-b',   date: '2026-09-22', v: { times: '10.00, 10.00, 10.00' }, at: 1 },
-    { leaf: 'wu-fb',   date: '2026-09-24', v: { reps: '4, 2' }, at: 1 },
-    { leaf: 'end-b',   date: '2026-09-24', v: { times: '19.00' }, at: 2 },
-    { leaf: 'sk-c',    date: '2026-09-24', v: { sent: '0', tried: '2', grade: '7a', note: 'topped both, one fall' }, at: 3 },
-    { leaf: 'wu-fb',   date: '2026-09-29', v: { reps: '3, 4' }, at: 1 },
-    { leaf: 'end-a',   date: '2026-09-29', v: { times: '7.50' }, at: 2 },
-    { leaf: 'sk-b',    date: '2026-09-29', v: { sent: '0', tried: '1', grade: '7a', note: 'topped with 5 takes' }, at: 3 },
-    // October, outdoors
-    { leaf: 'out-log', date: '2026-10-04', v: { text: 'Outdoor 5+, could not do it clean. First climb, forgive yourself. 5+ clean after. 6a on top rope, nice.' }, at: 1 },
-    { leaf: 'out-log', date: '2026-10-05', v: { text: 'Started scared, took on an easy route. Decided to practise falls instead. Then used an ohm and did a 6a+ feeling chill. Happy.' }, at: 1 },
-    { leaf: 'pe-e',    date: '2026-10-09', v: { count: '2', grade: '6b' }, at: 1 },
-    { leaf: 'out-log', date: '2026-10-09', v: { text: 'Slow day at Itchy, taught a lot including cleaning. Much better the second time on the 6b.' }, at: 2 },
-    { leaf: 'sk-b',    date: '2026-10-10', v: { sent: '0', tried: '3', grade: '7a' }, at: 1 },
-    { leaf: 'out-log', date: '2026-10-10', v: { text: 'Morning at Seismico, 5+ with falls, 6a, tried 6c. Then Itchchu for the 7a, nowhere near. Should have stuck on the 6b and worked perfection on a medium-hard route.' }, at: 2 },
-    { leaf: 'out-log', date: '2026-10-15', v: { text: 'Tallat, roig, Emo. Got lost, did not read the instructions properly. Eventually got a climb and practised falling high on a 5c. Good route.' }, at: 1 },
-    { leaf: 'out-log', date: '2026-10-16', v: { text: 'Tallat, roig, Dalma. Aim was to fall 10x and work a 6b/+ three or four times really clean. The 6b after the warm up was impossible. Three hours on the first three clips, did not have it in me to finish.' }, at: 1 }
+    { id: 'seed0', leaf: 'wu-dh', date: '2026-08-29', v: { reps:  "8" } },
+    { id: 'seed1', leaf: 'end-a', date: '2026-08-29', v: { times:  "8.20, 5.20, 3.30" } },
+    { id: 'seed2', leaf: 'pe-d', date: '2026-09-02', v: { count:  "7", grade:  "6b" } },
+    { id: 'seed3', leaf: 'wu-dh', date: '2026-09-04', v: { reps:  "8" } },
+    { id: 'seed4', leaf: 'wu-fb', date: '2026-09-07', v: { reps:  "3, 8" } },
+    { id: 'seed5', leaf: 'wu-alt', date: '2026-09-07', v: { reps:  "16, 16" } },
+    { id: 'seed6', leaf: 'up1', date: '2026-09-09', v: { weight:  "18", reps:  "8" } },
+    { id: 'seed7', leaf: 'up5', date: '2026-09-09', v: { weight:  "10", reps:  "12" } },
+    { id: 'seed8', leaf: 'end-a', date: '2026-09-15', v: { times:  "13.30, 7.45, 4.45" } },
+    { id: 'seed9', leaf: 'pe-e', date: '2026-09-15', v: { count:  "3", grade:  "6b+" } },
+    { id: 'seed10', leaf: 'end-b', date: '2026-09-19', v: { times:  "11.00, 9.00" } },
+    { id: 'seed11', leaf: 'end-b', date: '2026-09-22', v: { times:  "10.00, 10.00, 10.00" } },
+    { id: 'seed12', leaf: 'wu-fb', date: '2026-09-24', v: { reps:  "4, 2" } },
+    { id: 'seed13', leaf: 'end-b', date: '2026-09-24', v: { times:  "19.00" } },
+    { id: 'seed14', leaf: 'sk-c', date: '2026-09-24', v: { sent:  "0", tried:  "2", grade:  "7a", note:  "topped both, one fall" } },
+    { id: 'seed15', leaf: 'wu-fb', date: '2026-09-29', v: { reps:  "3, 4" } },
+    { id: 'seed16', leaf: 'end-a', date: '2026-09-29', v: { times:  "7.50" } },
+    { id: 'seed17', leaf: 'sk-b', date: '2026-09-29', v: { sent:  "0", tried:  "1", grade:  "7a", note:  "topped with 5 takes" } },
+    { id: 'seed18', leaf: 'out-log', date: '2026-10-04', v: { text:  "Outdoor 5+, could not do it clean. First climb, forgive yourself. 5+ clean after. 6a on top rope, nice." } },
+    { id: 'seed19', leaf: 'out-log', date: '2026-10-05', v: { text:  "Started scared, took on an easy route. Decided to practise falls instead. Then used an ohm and did a 6a+ feeling chill. Happy." } },
+    { id: 'seed20', leaf: 'pe-e', date: '2026-10-09', v: { count:  "2", grade:  "6b" } },
+    { id: 'seed21', leaf: 'out-log', date: '2026-10-09', v: { text:  "Slow day at Itchy, taught a lot including cleaning. Much better the second time on the 6b." } },
+    { id: 'seed22', leaf: 'sk-b', date: '2026-10-10', v: { sent:  "0", tried:  "3", grade:  "7a" } },
+    { id: 'seed23', leaf: 'out-log', date: '2026-10-10', v: { text:  "Morning at Seismico, 5+ with falls, 6a, tried 6c. Then Itchchu for the 7a, nowhere near. Should have stuck on the 6b and worked perfection on a medium-hard route." } },
+    { id: 'seed24', leaf: 'out-log', date: '2026-10-15', v: { text:  "Tallat, roig, Emo. Got lost, did not read the instructions properly. Eventually got a climb and practised falling high on a 5c. Good route." } },
+    { id: 'e17922370951789gkp', leaf: 'out-f', date: '2026-10-15', v: { reps:  "4" }, at: 1792237095178 },
+    { id: 'seed25', leaf: 'out-log', date: '2026-10-16', v: { text:  "Tallat, roig, Dalma. Aim was to fall 10x and work a 6b/+ three or four times really clean. The 6b after the warm up was impossible. Three hours on the first three clips, did not have it in me to finish." } },
+    { id: 'e1792237085555grsn', leaf: 'out-f', date: '2026-10-16', v: { reps:  "10" }, at: 1792237085555 },
+    { id: 'e1792259855549l5g0', leaf: 'out-f', date: '2026-10-17', v: { reps:  "3" }, at: 1792259855549 },
+    { id: 'e1792259913175nzc2', leaf: 'out-log', date: '2026-10-17', v: { text:  "Dws. First freestyle low grade heart rate high, then commited to it and was good although tense. Then tried the harder section but the down climbing was hard so just had fun and fell/ jumped" }, at: 1792259913175 },
+    { id: 'e1792521411333otdv', leaf: 'lo1a', date: '2026-10-20', v: { weight:  "20", reps:  "15,15" }, at: 1792521411333 },
+    { id: 'e1792521419109kcz5', leaf: 'lo3a', date: '2026-10-20', v: { reps:  "15,15" }, at: 1792521419109 },
+    { id: 'e1792521422956y2e3', leaf: 'lo1b', date: '2026-10-20', v: { reps:  "15,15" }, at: 1792521422956 },
+    { id: 'e179252187812597nw', leaf: 'm1a', date: '2026-10-20', v: { mins:  "5" }, at: 1792521878125 },
+    { id: 'e179252212369223ya', leaf: 'm2a', date: '2026-10-20', v: { mins:  "2.5" }, at: 1792522123692 },
+    { id: 'e1792522217819tlwn', leaf: 'wu-dh', date: '2026-10-20', v: { reps:  "6" }, at: 1792522217819 }
   ];
 
   var entries = [];
@@ -537,7 +562,7 @@ try { if (navigator.storage && navigator.storage.persist) {
         diag.msg = 'The store is empty, and it has been seeded once already, so it will not be seeded again. ' +
           'If you had entries here, import a backup rather than starting over.';
       } else {
-        entries = SEED.map(function (x, i) { return { id: 'seed' + i, leaf: x.leaf, date: x.date, v: x.v }; });
+        entries = SEED.map(function (x, i) { return { id: x.id || ('seed' + i), leaf: x.leaf, date: x.date, v: x.v, at: x.at || i }; });
         await safeSet(STORE, JSON.stringify(entries));
         await safeSet(SEEDED, 'yes');
         diag.state = 'ok';

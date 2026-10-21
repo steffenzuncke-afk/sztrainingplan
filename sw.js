@@ -1,5 +1,5 @@
 /* Bump CACHE when any file below changes, or phones keep serving the old app. */
-var CACHE = 'training-v5';
+var CACHE = 'training-v7';
 var SHELL = [
   './', './index.html', './app.css', './app.js',
   './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './icon-maskable-512.png'
