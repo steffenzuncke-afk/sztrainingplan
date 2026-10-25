@@ -99,7 +99,6 @@
 .phase { text-align: center; font-size: 14px; color: var(--dim); padding-bottom: 16px; min-height: 20px; }
 .tctl { display: flex; gap: 10px; }
 .tctl button { flex: 1; background: var(--hi); border: 1px solid var(--line); border-radius: 11px; padding: 15px 8px; font-size: 14px; font-weight: 500; min-height: 52px; }
-.volrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 16px; font-size: 14px; color: var(--dim); }
 .params { display: flex; gap: 8px; padding-bottom: 16px; }
 .params div { flex: 1; }
 .params label { display: block; font-size: 11px; color: var(--dim); padding-bottom: 5px; text-align: center; }

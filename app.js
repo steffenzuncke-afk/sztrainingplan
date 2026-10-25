@@ -29,7 +29,6 @@ try { if (navigator.storage && navigator.storage.persist) {
 (function () {
   var STORE = 'training-entries-v2';
   var INTENT = 'training-intent-v3';
-  var VOL = 'training-vol-v1';
   var SEEDED = 'training-seeded-v2';
   var BACKUP = 'training-backup-v2';
   var diag = { state: 'ok', msg: '', keys: [], lastWrite: null, offerSeed: false };
@@ -79,10 +78,10 @@ try { if (navigator.storage && navigator.storage.persist) {
       name: 'Gym', colour: 'var(--gym)',
       blocks: [
         { id: 'ab', name: 'Ab Flow', target: 2, kind: 'all', children: [
-          { id: 'ab1', name: 'Lying down leg raise', metric: 'reps', unit: 'reps', note: 'flat back, pelvic tilt — play with leg positions' },
+          { id: 'ab2', name: 'Bird dogs', metric: 'reps', unit: 'reps' },
+          { id: 'ab1', name: 'Lying down leg raise', metric: 'hold', note: 'flat back, pelvic tilt — play with leg positions' },
           { id: 'ab4', name: 'Hanging leg raise', metric: 'reps', unit: 'reps' },
-          { id: 'ab3', name: 'L-sit hold', metric: 'reps', unit: 'seconds', timer: { work: 20, rest: 40, reps: 5, sets: 1, setRest: 0 } },
-          { id: 'ab2', name: 'Bird dogs', metric: 'reps', unit: 'reps', retired: true }
+          { id: 'ab3', name: 'L-sit hold', metric: 'reps', unit: 'seconds' }
         ]},
         { id: 'gm', name: 'Good Mornings', target: 1, kind: 'all', children: [
           { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warmup — cross over, cable, mat or band' },
@@ -125,6 +124,7 @@ try { if (navigator.storage && navigator.storage.persist) {
         { id: 'm1', name: 'Lower & Middle Back Mobility', target: 1, kind: 'all', children: [
           { id: 'mb-twist', name: 'Side twists', metric: 'hold' },
           { id: 'mb-foam', name: 'Foam roller', metric: 'hold' },
+          { id: 'mb-pancake', name: 'Pancake', metric: 'hold', note: 'sit and hold' },
           { id: 'mb-arch', name: 'Arched back, bikram style', metric: 'hold', note: 'back and sides — standing, on knees or sitting' },
           { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
@@ -226,7 +226,28 @@ try { if (navigator.storage && navigator.storage.persist) {
     { id: 'e1792521422956y2e3', leaf: 'lo1b', date: '2026-10-20', v: { reps:  "15,15" }, at: 1792521422956 },
     { id: 'e179252187812597nw', leaf: 'm1a', date: '2026-10-20', v: { mins:  "5" }, at: 1792521878125 },
     { id: 'e179252212369223ya', leaf: 'm2a', date: '2026-10-20', v: { mins:  "2.5" }, at: 1792522123692 },
-    { id: 'e1792522217819tlwn', leaf: 'wu-dh', date: '2026-10-20', v: { reps:  "6" }, at: 1792522217819 }
+    { id: 'e1792522217819tlwn', leaf: 'wu-dh', date: '2026-10-20', v: { reps:  "6" }, at: 1792522217819 },
+    { id: 'e17925636732366n7l', leaf: 'gl-fig4foam', date: '2026-10-20', v: { mins:  "2.5" }, at: 1792563673238 },
+    { id: 'e1792563704226x1om', leaf: 'mb-foam', date: '2026-10-20', v: { mins:  "5" }, at: 1792563704226 },
+    { id: 'e17925673267679p1h', leaf: 'hm-long', date: '2026-10-21', v: { mins:  "7" }, at: 1792567326767 },
+    { id: 'e1792567606986ce1s', leaf: 'gl-child', date: '2026-10-21', v: { mins:  "3.3" }, at: 1792567606986 },
+    { id: 'e1792567967593bts4', leaf: 'ih-baby', date: '2026-10-21', v: { mins:  "2.5" }, at: 1792567967594 },
+    { id: 'e1792567986562qqg0', leaf: 'gl-fig4', date: '2026-10-21', v: { mins:  "2.5" }, at: 1792567986562 },
+    { id: 'e1792572819239kuzj', leaf: 'rn-a', date: '2026-10-21', v: { distance:  "3.75", time:  "21.29", desc:  "" }, at: 1792572819239 },
+    { id: 'e179260326031230e8', leaf: 'wu-fb', date: '2026-10-21', v: { reps:  "4,3" }, at: 1792603260312 },
+    { id: 'e1792928663777si9k', leaf: 'hm-cork', date: '2026-10-24', v: { mins:  "1" }, at: 1792928663777 },
+    { id: 'e1792925678439keiu', leaf: 'up1', date: '2026-10-25', v: { weight:  "18", reps:  "10,10,10" }, at: 1792925678439 },
+    { id: 'e1792925687096s4uf', leaf: 'up8', date: '2026-10-25', v: { weight:  "6", reps:  "10,10,10" }, at: 1792925687096 },
+    { id: 'e1792926474197t7sj', leaf: 'up9', date: '2026-10-25', v: { weight:  "12", reps:  "12,12,12" }, at: 1792926474197 },
+    { id: 'e17929264916260dri', leaf: 'up3', date: '2026-10-25', v: { weight:  "12", reps:  "8,10,8" }, at: 1792926491626 },
+    { id: 'e1792926910045ktz4', leaf: 'lo2w', date: '2026-10-25', v: { reps:  "20,16" }, at: 1792926910045 },
+    { id: 'e1792927407262b9e3', leaf: 'lo2b', date: '2026-10-25', v: { weight:  "6.75", reps:  "15,15,15" }, at: 1792927407262 },
+    { id: 'e17929274149078smp', leaf: 'lo2c', date: '2026-10-25', v: { reps:  "10,10,10" }, at: 1792927414907 },
+    { id: 'e17929275864625wq8', leaf: 'ab4', date: '2026-10-25', v: { reps:  "5,5,5" }, at: 1792927586462 },
+    { id: 'e1792927889386x01q', leaf: 'ab1', date: '2026-10-25', v: { reps:  "2.5" }, at: 1792927889386 },
+    { id: 'e179292796153990qs', leaf: 'ab2', date: '2026-10-25', v: { reps:  "20" }, at: 1792927961539 },
+    { id: 'e17929286529170at7', leaf: 'hm-single', date: '2026-10-25', v: { mins:  "2.5" }, at: 1792928652917 },
+    { id: 'e1792929145155b2e3', leaf: 'mb-foam', date: '2026-10-25', v: { mins:  "7" }, at: 1792929145155 }
   ];
 
   var entries = [];
@@ -322,8 +343,12 @@ try { if (navigator.storage && navigator.storage.persist) {
       if (!parts.length) return null;
       return fmtMin(parts.reduce(function (a, x) { return a + secs(x); }, 0)) + ' on wall';
     }
+    if (leaf.metric === 'weight') {
+      var vl = volumeLoad(v);
+      return vl ? vl + ' kg lifted' : null;
+    }
     if (leaf.metric === 'hold') {
-      var h = nums(v.mins);
+      var h = nums(minsOf(v));
       if (!h.length) return null;
       return h.reduce(function (a, b) { return a + b; }, 0) + ' min held';
     }
@@ -331,6 +356,26 @@ try { if (navigator.storage && navigator.storage.persist) {
     if (leaf.metric === 'sends') { return sentOf(v) + ' of ' + triedOf(v) + ' sent'; }
     if (leaf.metric === 'attempts') { return (nums(v.count)[0] || 0) + ' tries'; }
     return null;
+  }
+
+  // a hold entered before Lying leg raise moved to minutes was stored as reps
+  function minsOf(v) {
+    return (v.mins !== undefined && v.mins !== '') ? v.mins : (v.reps || '');
+  }
+  // weight and reps pair up set by set; one weight applies to every set
+  function sets(v) {
+    var w = nums(v.weight), r = nums(v.reps);
+    var n = Math.max(w.length, r.length, 1);
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      out.push({ w: w.length ? (w[i] !== undefined ? w[i] : w[w.length - 1]) : null,
+                 r: r.length ? (r[i] !== undefined ? r[i] : null) : null });
+    }
+    return out;
+  }
+  function topWeight(v) { var w = nums(v.weight); return w.length ? Math.max.apply(null, w) : 0; }
+  function volumeLoad(v) {
+    return sets(v).reduce(function (a, s) { return a + ((s.w || 0) * (s.r || 0)); }, 0);
   }
 
   function sentOf(v) { return nums(v.sent)[0] || 0; }
@@ -350,8 +395,15 @@ try { if (navigator.storage && navigator.storage.persist) {
       ((v.text || '').length > 80 ? '\u2026' : '');
     if (leaf.metric === 'reps') return v.reps;
     if (leaf.metric === 'skill') return (v.skill || '?') + ' — ' + v.reps;
-    if (leaf.metric === 'hold') return String(v.mins).split(',').map(function (x) { return x.trim() + 'm'; }).join(' / ');
-    if (leaf.metric === 'weight') return (v.weight ? v.weight + 'kg' : '') + (v.reps ? (v.weight ? ' \u00d7 ' : '') + v.reps : '');
+    if (leaf.metric === 'hold') return String(minsOf(v)).split(',').map(function (x) { return x.trim() + 'm'; }).join(' / ');
+    if (leaf.metric === 'weight') {
+      if (nums(v.weight).length > 1) {
+        return sets(v).map(function (s) {
+          return s.w + 'kg' + (s.r ? ' \u00d7 ' + s.r : '');
+        }).join(', ');
+      }
+      return (v.weight ? v.weight + 'kg' : '') + (v.reps ? (v.weight ? ' \u00d7 ' : '') + v.reps : '');
+    }
     if (leaf.metric === 'run') {
       var d = parseFloat(v.distance) || 0, t = secs(v.time);
       if (!d || !t) return v.distance + 'km';
@@ -368,12 +420,15 @@ try { if (navigator.storage && navigator.storage.persist) {
       .reduce(function (a, x) { return x.trim() ? a + secs(x) : a; }, 0));
     if (mt === 'reps') return sum(v.reps) + (leaf.unit ? ' ' + leaf.unit : '');
     if (mt === 'skill') return (v.skill || '?') + ' \u00b7 ' + sum(v.reps);
-    if (mt === 'hold') return sum(v.mins) + ' min';
+    if (mt === 'hold') return sum(minsOf(v)) + ' min';
     if (mt === 'volume') return v.count + ' \u00d7 ' + (v.grade || '\u2014');
     if (mt === 'attempts') return v.count + ' tries';
     if (mt === 'sends') return sentOf(v) + '/' + triedOf(v);
     if (mt === 'note') return 'logged';
-    if (mt === 'weight') return (v.weight ? v.weight + 'kg' : '') + (v.reps ? ' \u00d7 ' + v.reps : '');
+    if (mt === 'weight') {
+      var t = topWeight(v), n = nums(v.reps).reduce(function (a, b) { return a + b; }, 0);
+      return (t ? t + 'kg' : '') + (n ? ' \u00d7 ' + n : '');
+    }
     if (mt === 'run') {
       var dd = parseFloat(v.distance) || 0, tt = secs(v.time);
       return dd && tt ? fmtMin(Math.round(tt / dd)) + ' /km' : (v.distance || '') + 'km';
@@ -479,7 +534,8 @@ try { if (navigator.storage && navigator.storage.persist) {
     if (!t) return r;
     if (leaf.metric === 'volume' || leaf.metric === 'attempts' ||
         leaf.metric === 'sends' || leaf.metric === 'note') return r;
-    var multi = (leaf.metric === 'reps' || leaf.metric === 'skill' ? nums(e.v.reps).length : leaf.metric === 'hold' ? nums(e.v.mins).length :
+    var multi = (leaf.metric === 'weight' ? sets(e.v).length :
+      leaf.metric === 'reps' || leaf.metric === 'skill' ? nums(e.v.reps).length : leaf.metric === 'hold' ? nums(minsOf(e.v)).length :
       String(e.v.times || '').split(',').filter(function (x) { return x.trim(); }).length) > 1;
     return multi ? r + ' \u00b7 ' + t : r;
   }
@@ -491,8 +547,11 @@ try { if (navigator.storage && navigator.storage.persist) {
     if (leaf.metric === 'sends') return sentOf(v) * 1000 + triedOf(v);
     if (leaf.metric === 'note') return 0;
     if (leaf.metric === 'reps' || leaf.metric === 'skill') return nums(v.reps).reduce(function (a, b) { return a + b; }, 0);
-    if (leaf.metric === 'hold') return nums(v.mins).reduce(function (a, b) { return a + b; }, 0);
-    if (leaf.metric === 'weight') return (parseFloat(v.weight) || 0) * 100 + (parseFloat(v.reps) || 0);
+    if (leaf.metric === 'hold') return nums(minsOf(v)).reduce(function (a, b) { return a + b; }, 0);
+    if (leaf.metric === 'weight') {
+      // heaviest wins; at equal weight, more total reps wins
+      return topWeight(v) * 10000 + nums(v.reps).reduce(function (a, b) { return a + b; }, 0);
+    }
     if (leaf.metric === 'run') {
       var d = parseFloat(v.distance) || 0, t = secs(v.time);
       if (!d || !t) return -1e9;
@@ -574,8 +633,6 @@ try { if (navigator.storage && navigator.storage.persist) {
       safeSet(BACKUP, JSON.stringify(entries));
     }
 
-    var vv = await tryGet(VOL);
-    if (vv !== undefined && vv !== null) { var n = parseInt(vv, 10); if (n >= 0 && n < 4) volIx = n; }
     var iv = await tryGet(INTENT);
     if (iv) { try { intents = JSON.parse(iv) || {}; } catch (err) { intents = {}; } }
     render();
@@ -872,8 +929,11 @@ try { if (navigator.storage && navigator.storage.persist) {
         '<input id="f-reps" inputmode="decimal" placeholder="6   or   6, 4"><div class="total" id="live"></div></div>';
     }
     if (m === 'hold') return '<div class="field"><label>Minutes held</label><input id="f-mins" inputmode="decimal" placeholder="5   or   5, 3"><div class="total" id="live"></div></div>';
-    if (m === 'weight') return '<div class="field"><label>Weight, kg</label><input id="f-weight" inputmode="decimal" placeholder="18"></div>' +
-      '<div class="field"><label>Reps</label><input id="f-reps" inputmode="numeric" placeholder="8"></div>';
+    if (m === 'weight') return '<div class="pair">' +
+      '<div class="field"><label>Weight, kg</label><input id="f-weight" inputmode="decimal" placeholder="18   or   18, 20, 22"></div>' +
+      '<div class="field"><label>Reps</label><input id="f-reps" inputmode="decimal" placeholder="10, 10, 10"></div></div>' +
+      '<div class="total" id="live"></div>' +
+      '<div class="hint">One weight covers every set. Comma-separate the weights too if they changed.</div>';
     if (m === 'run') return '<div class="field"><label>Distance, km</label><input id="f-distance" inputmode="decimal" placeholder="5.2"></div>' +
       '<div class="field"><label>Time</label><input id="f-time" inputmode="decimal" placeholder="27.40"><div class="total" id="live"></div>' +
       '<div class="hint">Minutes and seconds. Pace works itself out.</div></div>' +
@@ -931,7 +991,7 @@ try { if (navigator.storage && navigator.storage.persist) {
     return h;
   }
 
-  function defaultTimer(leaf) { return leaf.timer || { work: 30, rest: 30, reps: 8, sets: 1, setRest: 0 }; }
+  function defaultTimer(leaf) { return leaf.timer || { work: 60, rest: 0, reps: 10, sets: 1, setRest: 0 }; }
   function intervalBody(leaf) {
     var t = defaultTimer(leaf);
     return '<div class="params">' +
@@ -951,10 +1011,6 @@ try { if (navigator.storage && navigator.storage.persist) {
       '<div class="timer-head"><div class="timer-title">Timer</div>' +
       '<div class="switch"><button data-mode="interval" class="on">Intervals</button><button data-mode="stop">Stopwatch</button></div></div>' +
       '<div id="tbody">' + intervalBody(leaf) + '</div>' +
-      '<div class="volrow"><span>Beep</span><div class="switch" id="volsw">' +
-      VOLS.map(function (v, i) {
-        return '<button data-vol="' + i + '"' + (i === volIx ? ' class="on"' : '') + '>' + v[0] + '</button>';
-      }).join('') + '</div></div>' +
       '<div class="warnbar">The screen stays on while a timer runs. If you hear nothing, turn the media volume up \u2014 the beep plays as media, not as a ringtone.</div>' +
       '</div>';
   }
@@ -967,36 +1023,47 @@ try { if (navigator.storage && navigator.storage.persist) {
     } catch (err) {}
   }
   var actx = null;
-  var VOLS = [['Off', 0], ['Low', 0.3], ['Mid', 0.6], ['Loud', 1.0]];
-  var volIx = 2;
+  var comp = null;
+  function audioOut() {
+    // a limiter lets us push close to full scale without the crackle of clipping
+    if (!comp) {
+      comp = actx.createDynamicsCompressor();
+      comp.threshold.value = -8; comp.knee.value = 0;
+      comp.ratio.value = 20; comp.attack.value = 0.002; comp.release.value = 0.08;
+      comp.connect(actx.destination);
+    }
+    return comp;
+  }
+  function beep(freq, dur) {
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+      var out = audioOut(), t0 = actx.currentTime;
+      // fundamental plus an octave: the ear reads the stack as louder than either alone
+      [[freq, 0.9], [freq * 2, 0.45]].forEach(function (pair) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.connect(g); g.connect(out);
+        o.frequency.value = pair[0];
+        o.type = 'square';            // richer in harmonics, so it carries over gym noise
+        var peak = pair[1];
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(peak, t0 + 0.004);   // fast attack, no click
+        g.gain.setValueAtTime(peak, t0 + dur * 0.6);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        o.start(t0); o.stop(t0 + dur + 0.02);
+      });
+    } catch (err) {}
+  }
   function unlockAudio() {
     try {
       if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
       if (actx.state === 'suspended') actx.resume();
+      // a silent one-sample play: the tap that starts the timer is what buys us sound
       var b = actx.createBuffer(1, 1, 22050), s = actx.createBufferSource();
       s.buffer = b; s.connect(actx.destination); s.start(0);
     } catch (err) {}
   }
-  function beep(freq, dur) {
-    try {
-      if (!VOLS[volIx][1]) return;
-      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-      var o = actx.createOscillator(), g = actx.createGain();
-      o.connect(g); g.connect(actx.destination);
-      o.frequency.value = freq;
-      o.type = volIx >= 2 ? 'square' : 'sine';
-      g.gain.setValueAtTime(0.25 * VOLS[volIx][1], actx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
-      o.start(); o.stop(actx.currentTime + dur);
-    } catch (err) {}
-  }
-  function unlockAudio_() {
-    try {
-      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-      if (actx.state === 'suspended') actx.resume();
-    } catch (err) {}
-  }
-  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (err) {} }
   function stopTimer() {
     if (timer && timer.h) clearInterval(timer.h);
     timer = null;
@@ -1015,9 +1082,9 @@ try { if (navigator.storage && navigator.storage.persist) {
       if (s < cfg.sets - 1 && cfg.setRest > 0) seq.push({ p: 'rest', d: cfg.setRest, label: 'Set rest' });
     }
     if (!seq.length) return;
-    timer = { mode: 'interval', seq: seq, i: 0, end: Date.now() + seq[0].d * 1000, h: null };
+    timer = { mode: 'interval', seq: seq, i: 0, end: Date.now() + seq[0].d * 1000, h: null, counted: null };
     keepAwake(true);
-    beep(880, 0.12); buzz(140);
+    beep(880, 0.22); buzz(140);
     timer.h = setInterval(tickInterval, 100);
     tickInterval();
     document.getElementById('t-go').textContent = 'Stop';
@@ -1025,12 +1092,18 @@ try { if (navigator.storage && navigator.storage.persist) {
   function tickInterval() {
     if (!timer || timer.mode !== 'interval') return;
     var left = Math.ceil((timer.end - Date.now()) / 1000);
+    // count it down: three short ticks at 3, 2, 1 before the phase turns over
+    if (left > 0 && left <= 3 && timer.counted !== left) {
+      timer.counted = left;
+      beep(1180, 0.07);
+      buzz(60);
+    }
     var clock = document.getElementById('clock'), phase = document.getElementById('phase');
     if (!clock) { stopTimer(); return; }
     if (left <= 0) {
       timer.i++;
       if (timer.i >= timer.seq.length) {
-        beep(660, 0.4); buzz([200, 120, 200]);
+        beep(660, 0.5); buzz([200, 120, 200]);
         clock.textContent = 'Done';
         clock.className = 'clock';
         phase.textContent = 'Finished \u2014 log it above';
@@ -1040,7 +1113,8 @@ try { if (navigator.storage && navigator.storage.persist) {
         return;
       }
       timer.end = Date.now() + timer.seq[timer.i].d * 1000;
-      beep(timer.seq[timer.i].p === 'work' ? 880 : 520, 0.12);
+      timer.counted = null;
+      beep(timer.seq[timer.i].p === 'work' ? 880 : 520, 0.22);
       buzz(timer.seq[timer.i].p === 'work' ? 140 : [60, 60, 60]);
       left = timer.seq[timer.i].d;
     }
@@ -1103,6 +1177,7 @@ try { if (navigator.storage && navigator.storage.persist) {
     if (m === 'reps' || m === 'skill') v.reps = g('f-reps');
     else if (m === 'times') v.times = g('f-times');
     else if (m === 'hold') v.mins = g('f-mins');
+    else if (m === 'weight') { v.weight = g('f-weight'); v.reps = g('f-reps'); }
     else if (m === 'run') {
       var d = parseFloat(g('f-distance')) || 0, t = secs(g('f-time'));
       live.textContent = d && t ? fmtMin(Math.round(t / d)) + ' per km' : '';
@@ -1258,15 +1333,6 @@ try { if (navigator.storage && navigator.storage.persist) {
       if (cur) cur.d += 30;
       tickInterval();
     };
-    document.querySelectorAll('[data-vol]').forEach(function (b) {
-      b.onclick = async function () {
-        volIx = parseInt(b.getAttribute('data-vol'), 10);
-        document.querySelectorAll('[data-vol]').forEach(function (x) { x.className = ''; });
-        b.className = 'on';
-        if (VOLS[volIx][1]) { unlockAudio_(); beep(880, 0.12); }
-        await safeSet(VOL, String(volIx));
-      };
-    });
     if (rs) rs.onclick = function () { stopTimer(); render(); };
   }
 
