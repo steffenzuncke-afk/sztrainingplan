@@ -83,36 +83,36 @@ try { if (navigator.storage && navigator.storage.persist) {
           { id: 'ab4', name: 'Hanging leg raise', metric: 'reps', unit: 'reps' },
           { id: 'ab3', name: 'L-sit hold', metric: 'reps', unit: 'seconds' }
         ]},
-        { id: 'gm', name: 'Good Mornings', target: 1, kind: 'all', children: [
+        { id: 'gm', name: 'Lower - Good Mornings', target: 1, kind: 'all', children: [
           { id: 'lo3a', name: 'Hip ins and outs', metric: 'reps', unit: 'reps', note: 'warmup — cross over, cable, mat or band' },
           { id: 'lo1a', name: 'Single leg good mornings', metric: 'weight', note: 'crux — or deadlift' },
           { id: 'lo1b', name: 'Hip bench step down', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'ch', name: 'Cable Ham', target: 1, kind: 'all', children: [
+        { id: 'ch', name: 'Lower - Cable Ham', target: 1, kind: 'all', children: [
           { id: 'lo2w', name: 'Leg swings and wide splits', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo2b', name: 'Cable hamstring eccentric', metric: 'weight', note: 'crux' },
           { id: 'lo2c', name: 'Hip flexor warrior pose', metric: 'reps', unit: 'reps', note: 'combo' }
         ]},
-        { id: 'sl', name: 'Single Leg', target: 1, kind: 'all', children: [
+        { id: 'sl', name: 'Lower - Single Leg', target: 1, kind: 'all', children: [
           { id: 'lo1w', name: 'Single leg forward fold', metric: 'reps', unit: 'reps', note: 'warmup' },
           { id: 'lo3b', name: 'Single leg stand', metric: 'reps', unit: 'seconds', note: 'balance' },
           { id: 'lo3c', name: 'Single leg airplanes', metric: 'reps', unit: 'reps', note: 'balance' }
         ]},
-        { id: 'uf1', name: 'Chest', target: 1, kind: 'all', children: [
+        { id: 'uf1', name: 'Upper - Chest', target: 1, kind: 'all', children: [
           { id: 'up1', name: 'Incline chest + hold / dips + hold', metric: 'weight' },
           { id: 'up8', name: 'Flys', metric: 'weight' },
           { id: 'up9', name: 'Shoulder press', metric: 'weight' },
           { id: 'up3', name: 'Lat bench overhead', metric: 'weight' },
           { id: 'up2', name: 'Dip hold', metric: 'reps', unit: 'seconds', retired: true }
         ]},
-        { id: 'uf2', name: 'Climbing Optimiser', target: 1, kind: 'all', children: [
+        { id: 'uf2', name: 'Upper - Climbing Optimiser', target: 1, kind: 'all', children: [
           { id: 'up10', name: 'Reverse rows', metric: 'reps', unit: 'reps', note: 'on bar' },
           { id: 'up4', name: 'Side raise knee up', metric: 'weight' },
           { id: 'up5', name: 'Wrist curl reverse', metric: 'weight' },
           { id: 'up6', name: 'Wrist curls', metric: 'weight' }
         ]},
-        { id: 'uf3', name: 'Pull', target: 1, kind: 'all', children: [
-          { id: 'up11', name: 'Pull ups / pull downs', metric: 'reps', unit: 'reps' },
+        { id: 'uf3', name: 'Upper - Pull', target: 1, kind: 'all', children: [
+          { id: 'up11', name: 'Pull ups / pull downs', metric: 'weight' },
           { id: 'up12', name: 'Side raises lying on bench', metric: 'weight' },
           { id: 'up7', name: 'Wrist side twists', metric: 'reps', unit: 'reps', note: 'long stick' }
         ]}
@@ -122,10 +122,11 @@ try { if (navigator.storage && navigator.storage.persist) {
       name: 'Mobility', colour: 'var(--stretch)',
       blocks: [
         { id: 'm1', name: 'Lower & Middle Back Mobility', target: 1, kind: 'all', children: [
-          { id: 'mb-twist', name: 'Side twists', metric: 'hold' },
           { id: 'mb-foam', name: 'Foam roller', metric: 'hold' },
+          { id: 'mb-sphinx', name: 'Sphinx pose', metric: 'hold', note: 'arms more forward' },
           { id: 'mb-pancake', name: 'Pancake', metric: 'hold', note: 'sit and hold' },
           { id: 'mb-arch', name: 'Arched back, bikram style', metric: 'hold', note: 'back and sides — standing, on knees or sitting' },
+          { id: 'mb-twist', name: 'Side twists', metric: 'hold', retired: true },
           { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
         { id: 'm2', name: 'Glutes / Arched Back', target: 1, kind: 'all', children: [
@@ -138,14 +139,15 @@ try { if (navigator.storage && navigator.storage.persist) {
         ]},
         { id: 'm3', name: 'Hamstring', target: 1, kind: 'all', children: [
           { id: 'hm-cork', name: 'Cork ball', metric: 'hold', note: 'use it more, it gives a lot' },
-          { id: 'hm-wide', name: 'Wide splits forward fold', metric: 'hold' },
           { id: 'hm-single', name: 'Single leg forward fold', metric: 'hold' },
           { id: 'hm-jeff', name: 'Jefferson curl', metric: 'hold' },
           { id: 'hm-long', name: 'Forward fold long', metric: 'hold' }
         ]},
-        { id: 'm4', name: 'Inside / Outside Hip', target: 1, kind: 'all', children: [
+        { id: 'm4', name: 'Inner Thigh / Groin', target: 1, kind: 'all', children: [
           { id: 'ih-baby', name: 'Happy baby', metric: 'hold' },
-          { id: 'ih-frog', name: 'Frog lizard pose', metric: 'hold' }
+          { id: 'ih-frog', name: 'Frog', metric: 'hold' },
+          { id: 'ih-vwall', name: 'V against wall', metric: 'hold' },
+          { id: 'hm-wide', name: 'Wide splits forward fold', metric: 'hold' }
         ]},
         { id: 'm5', name: 'Hip Flexor w/ Quad', target: 1, kind: 'all', children: [
           { id: 'hq-lunge', name: 'Low lunge + quad', metric: 'hold' },
@@ -160,21 +162,23 @@ try { if (navigator.storage && navigator.storage.persist) {
         ]}
       ]
     },
-    outdoor: {
-      name: 'Outdoor', colour: 'var(--outdoor)', untracked: true,
-      blocks: [
-        { id: 'out', name: 'Outdoor Climbing', kind: 'all', children: [
-          { id: 'out-f', name: 'Number of falls', metric: 'reps', unit: 'falls' },
-          { id: 'out-log', name: 'Session log', metric: 'note', note: 'what happened, how it felt' }
-        ]}
-      ]
-    },
     running: {
       name: 'Running', colour: 'var(--run)',
       blocks: [
         { id: 'rn', name: 'Running', target: 1, kind: 'pick', metricLabel: 'pace', children: [
           { id: 'rn-a', name: 'Run', metric: 'run' },
           { id: 'rn-b', name: 'Sprint', metric: 'run' }
+        ]}
+      ]
+    },
+    outdoor: {
+      name: 'Fun Stuff', colour: 'var(--outdoor)', untracked: true,
+      blocks: [
+        { id: 'out', name: 'Fun Stuff', kind: 'all', children: [
+          { id: 'out-f', name: 'Outdoor climb - number of falls', metric: 'reps', unit: 'falls' },
+          { id: 'out-log', name: 'Outdoor climb - simple text log', metric: 'note', note: 'what happened, how it felt' },
+          { id: 'fun-hand', name: 'Handstand practise', metric: 'note', note: 'how it went' },
+          { id: 'fun-jaw', name: 'Jaw work', metric: 'hold' }
         ]}
       ]
     }
@@ -191,63 +195,112 @@ try { if (navigator.storage && navigator.storage.persist) {
   };
 
   var SEED = [
-    { id: 'seed0', leaf: 'wu-dh', date: '2026-08-29', v: { reps:  "8" } },
-    { id: 'seed1', leaf: 'end-a', date: '2026-08-29', v: { times:  "8.20, 5.20, 3.30" } },
-    { id: 'seed2', leaf: 'pe-d', date: '2026-09-02', v: { count:  "7", grade:  "6b" } },
-    { id: 'seed3', leaf: 'wu-dh', date: '2026-09-04', v: { reps:  "8" } },
-    { id: 'seed4', leaf: 'wu-fb', date: '2026-09-07', v: { reps:  "3, 8" } },
-    { id: 'seed5', leaf: 'wu-alt', date: '2026-09-07', v: { reps:  "16, 16" } },
-    { id: 'seed6', leaf: 'up1', date: '2026-09-09', v: { weight:  "18", reps:  "8" } },
-    { id: 'seed7', leaf: 'up5', date: '2026-09-09', v: { weight:  "10", reps:  "12" } },
-    { id: 'seed8', leaf: 'end-a', date: '2026-09-15', v: { times:  "13.30, 7.45, 4.45" } },
-    { id: 'seed9', leaf: 'pe-e', date: '2026-09-15', v: { count:  "3", grade:  "6b+" } },
-    { id: 'seed10', leaf: 'end-b', date: '2026-09-19', v: { times:  "11.00, 9.00" } },
-    { id: 'seed11', leaf: 'end-b', date: '2026-09-22', v: { times:  "10.00, 10.00, 10.00" } },
-    { id: 'seed12', leaf: 'wu-fb', date: '2026-09-24', v: { reps:  "4, 2" } },
-    { id: 'seed13', leaf: 'end-b', date: '2026-09-24', v: { times:  "19.00" } },
-    { id: 'seed14', leaf: 'sk-c', date: '2026-09-24', v: { sent:  "0", tried:  "2", grade:  "7a", note:  "topped both, one fall" } },
-    { id: 'seed15', leaf: 'wu-fb', date: '2026-09-29', v: { reps:  "3, 4" } },
-    { id: 'seed16', leaf: 'end-a', date: '2026-09-29', v: { times:  "7.50" } },
-    { id: 'seed17', leaf: 'sk-b', date: '2026-09-29', v: { sent:  "0", tried:  "1", grade:  "7a", note:  "topped with 5 takes" } },
-    { id: 'seed18', leaf: 'out-log', date: '2026-10-04', v: { text:  "Outdoor 5+, could not do it clean. First climb, forgive yourself. 5+ clean after. 6a on top rope, nice." } },
-    { id: 'seed19', leaf: 'out-log', date: '2026-10-05', v: { text:  "Started scared, took on an easy route. Decided to practise falls instead. Then used an ohm and did a 6a+ feeling chill. Happy." } },
-    { id: 'seed20', leaf: 'pe-e', date: '2026-10-09', v: { count:  "2", grade:  "6b" } },
-    { id: 'seed21', leaf: 'out-log', date: '2026-10-09', v: { text:  "Slow day at Itchy, taught a lot including cleaning. Much better the second time on the 6b." } },
-    { id: 'seed22', leaf: 'sk-b', date: '2026-10-10', v: { sent:  "0", tried:  "3", grade:  "7a" } },
-    { id: 'seed23', leaf: 'out-log', date: '2026-10-10', v: { text:  "Morning at Seismico, 5+ with falls, 6a, tried 6c. Then Itchchu for the 7a, nowhere near. Should have stuck on the 6b and worked perfection on a medium-hard route." } },
-    { id: 'seed24', leaf: 'out-log', date: '2026-10-15', v: { text:  "Tallat, roig, Emo. Got lost, did not read the instructions properly. Eventually got a climb and practised falling high on a 5c. Good route." } },
-    { id: 'e17922370951789gkp', leaf: 'out-f', date: '2026-10-15', v: { reps:  "4" }, at: 1792237095178 },
-    { id: 'seed25', leaf: 'out-log', date: '2026-10-16', v: { text:  "Tallat, roig, Dalma. Aim was to fall 10x and work a 6b/+ three or four times really clean. The 6b after the warm up was impossible. Three hours on the first three clips, did not have it in me to finish." } },
-    { id: 'e1792237085555grsn', leaf: 'out-f', date: '2026-10-16', v: { reps:  "10" }, at: 1792237085555 },
-    { id: 'e1792259855549l5g0', leaf: 'out-f', date: '2026-10-17', v: { reps:  "3" }, at: 1792259855549 },
-    { id: 'e1792259913175nzc2', leaf: 'out-log', date: '2026-10-17', v: { text:  "Dws. First freestyle low grade heart rate high, then commited to it and was good although tense. Then tried the harder section but the down climbing was hard so just had fun and fell/ jumped" }, at: 1792259913175 },
-    { id: 'e1792521411333otdv', leaf: 'lo1a', date: '2026-10-20', v: { weight:  "20", reps:  "15,15" }, at: 1792521411333 },
-    { id: 'e1792521419109kcz5', leaf: 'lo3a', date: '2026-10-20', v: { reps:  "15,15" }, at: 1792521419109 },
-    { id: 'e1792521422956y2e3', leaf: 'lo1b', date: '2026-10-20', v: { reps:  "15,15" }, at: 1792521422956 },
-    { id: 'e179252187812597nw', leaf: 'm1a', date: '2026-10-20', v: { mins:  "5" }, at: 1792521878125 },
-    { id: 'e179252212369223ya', leaf: 'm2a', date: '2026-10-20', v: { mins:  "2.5" }, at: 1792522123692 },
-    { id: 'e1792522217819tlwn', leaf: 'wu-dh', date: '2026-10-20', v: { reps:  "6" }, at: 1792522217819 },
-    { id: 'e17925636732366n7l', leaf: 'gl-fig4foam', date: '2026-10-20', v: { mins:  "2.5" }, at: 1792563673238 },
-    { id: 'e1792563704226x1om', leaf: 'mb-foam', date: '2026-10-20', v: { mins:  "5" }, at: 1792563704226 },
-    { id: 'e17925673267679p1h', leaf: 'hm-long', date: '2026-10-21', v: { mins:  "7" }, at: 1792567326767 },
-    { id: 'e1792567606986ce1s', leaf: 'gl-child', date: '2026-10-21', v: { mins:  "3.3" }, at: 1792567606986 },
-    { id: 'e1792567967593bts4', leaf: 'ih-baby', date: '2026-10-21', v: { mins:  "2.5" }, at: 1792567967594 },
-    { id: 'e1792567986562qqg0', leaf: 'gl-fig4', date: '2026-10-21', v: { mins:  "2.5" }, at: 1792567986562 },
-    { id: 'e1792572819239kuzj', leaf: 'rn-a', date: '2026-10-21', v: { distance:  "3.75", time:  "21.29", desc:  "" }, at: 1792572819239 },
-    { id: 'e179260326031230e8', leaf: 'wu-fb', date: '2026-10-21', v: { reps:  "4,3" }, at: 1792603260312 },
-    { id: 'e1792928663777si9k', leaf: 'hm-cork', date: '2026-10-24', v: { mins:  "1" }, at: 1792928663777 },
-    { id: 'e1792925678439keiu', leaf: 'up1', date: '2026-10-25', v: { weight:  "18", reps:  "10,10,10" }, at: 1792925678439 },
-    { id: 'e1792925687096s4uf', leaf: 'up8', date: '2026-10-25', v: { weight:  "6", reps:  "10,10,10" }, at: 1792925687096 },
-    { id: 'e1792926474197t7sj', leaf: 'up9', date: '2026-10-25', v: { weight:  "12", reps:  "12,12,12" }, at: 1792926474197 },
-    { id: 'e17929264916260dri', leaf: 'up3', date: '2026-10-25', v: { weight:  "12", reps:  "8,10,8" }, at: 1792926491626 },
-    { id: 'e1792926910045ktz4', leaf: 'lo2w', date: '2026-10-25', v: { reps:  "20,16" }, at: 1792926910045 },
-    { id: 'e1792927407262b9e3', leaf: 'lo2b', date: '2026-10-25', v: { weight:  "6.75", reps:  "15,15,15" }, at: 1792927407262 },
-    { id: 'e17929274149078smp', leaf: 'lo2c', date: '2026-10-25', v: { reps:  "10,10,10" }, at: 1792927414907 },
-    { id: 'e17929275864625wq8', leaf: 'ab4', date: '2026-10-25', v: { reps:  "5,5,5" }, at: 1792927586462 },
-    { id: 'e1792927889386x01q', leaf: 'ab1', date: '2026-10-25', v: { reps:  "2.5" }, at: 1792927889386 },
-    { id: 'e179292796153990qs', leaf: 'ab2', date: '2026-10-25', v: { reps:  "20" }, at: 1792927961539 },
-    { id: 'e17929286529170at7', leaf: 'hm-single', date: '2026-10-25', v: { mins:  "2.5" }, at: 1792928652917 },
-    { id: 'e1792929145155b2e3', leaf: 'mb-foam', date: '2026-10-25', v: { mins:  "7" }, at: 1792929145155 }
+    { id: "e1793311565303q3bb", leaf: "rn-a", date: "2026-08-08", v: { distance: "5.56", time: "35.33", desc: "" }, at: 1793311565303 },
+    { id: "e1793311540382suy7", leaf: "rn-a", date: "2026-08-16", v: { distance: "7.25", time: "43.52", desc: "" }, at: 1793311540382 },
+    { id: "e1793311523273sjb0", leaf: "rn-a", date: "2026-08-27", v: { distance: "4.78", time: "29.25", desc: "" }, at: 1793311523273 },
+    { id: "seed0", leaf: "wu-dh", date: "2026-08-29", v: { reps: "8" } },
+    { id: "seed1", leaf: "end-a", date: "2026-08-29", v: { times: "8.20, 5.20, 3.30" } },
+    { id: "e1793311635331qvh2", leaf: "rn-b", date: "2026-08-29", v: { distance: "3", time: "19.33", desc: "" }, at: 1793311635331 },
+    { id: "e17933114798540gzz", leaf: "rn-a", date: "2026-08-30", v: { distance: "5", time: "28.01", desc: "" }, at: 1793311479854 },
+    { id: "seed2", leaf: "pe-d", date: "2026-09-02", v: { count: "7", grade: "6b" } },
+    { id: "seed3", leaf: "wu-dh", date: "2026-09-04", v: { reps: "8" } },
+    { id: "e1793311450782c4d9", leaf: "rn-a", date: "2026-09-05", v: { distance: "5.17", time: "26.18", desc: "" }, at: 1793311450782 },
+    { id: "seed4", leaf: "wu-fb", date: "2026-09-07", v: { reps: "3, 8" } },
+    { id: "seed5", leaf: "wu-alt", date: "2026-09-07", v: { reps: "16, 16" } },
+    { id: "e1793311617775m8s0", leaf: "rn-b", date: "2026-09-08", v: { distance: "3", time: "19.3", desc: "" }, at: 1793311617775 },
+    { id: "seed6", leaf: "up1", date: "2026-09-09", v: { weight: "18", reps: "8" } },
+    { id: "seed7", leaf: "up5", date: "2026-09-09", v: { weight: "10", reps: "12" } },
+    { id: "e1793311603496npxm", leaf: "rn-b", date: "2026-09-13", v: { distance: "4.4", time: "28.06", desc: "" }, at: 1793311603496 },
+    { id: "seed8", leaf: "end-a", date: "2026-09-15", v: { times: "13.30, 7.45, 4.45" } },
+    { id: "seed9", leaf: "pe-e", date: "2026-09-15", v: { count: "3", grade: "6b+" } },
+    { id: "seed10", leaf: "end-b", date: "2026-09-19", v: { times: "11.00, 9.00" } },
+    { id: "seed11", leaf: "end-b", date: "2026-09-22", v: { times: "10.00, 10.00, 10.00" } },
+    { id: "seed12", leaf: "wu-fb", date: "2026-09-24", v: { reps: "4, 2" } },
+    { id: "seed13", leaf: "end-b", date: "2026-09-24", v: { times: "19.00" } },
+    { id: "seed14", leaf: "sk-c", date: "2026-09-24", v: { sent: "0", tried: "2", grade: "7a", note: "topped both, one fall" } },
+    { id: "seed15", leaf: "wu-fb", date: "2026-09-29", v: { reps: "3, 4" } },
+    { id: "seed16", leaf: "end-a", date: "2026-09-29", v: { times: "7.50" } },
+    { id: "seed17", leaf: "sk-b", date: "2026-09-29", v: { sent: "0", tried: "1", grade: "7a", note: "topped with 5 takes" } },
+    { id: "seed18", leaf: "out-log", date: "2026-10-04", v: { text: "Outdoor 5+, could not do it clean. First climb, forgive yourself. 5+ clean after. 6a on top rope, nice." } },
+    { id: "seed19", leaf: "out-log", date: "2026-10-05", v: { text: "Started scared, took on an easy route. Decided to practise falls instead. Then used an ohm and did a 6a+ feeling chill. Happy." } },
+    { id: "seed20", leaf: "pe-e", date: "2026-10-09", v: { count: "2", grade: "6b" } },
+    { id: "seed21", leaf: "out-log", date: "2026-10-09", v: { text: "Slow day at Itchy, taught a lot including cleaning. Much better the second time on the 6b." } },
+    { id: "seed22", leaf: "sk-b", date: "2026-10-10", v: { sent: "0", tried: "3", grade: "7a" } },
+    { id: "seed23", leaf: "out-log", date: "2026-10-10", v: { text: "Morning at Seismico, 5+ with falls, 6a, tried 6c. Then Itchchu for the 7a, nowhere near. Should have stuck on the 6b and worked perfection on a medium-hard route." } },
+    { id: "seed24", leaf: "out-log", date: "2026-10-15", v: { text: "Tallat, roig, Emo. Got lost, did not read the instructions properly. Eventually got a climb and practised falling high on a 5c. Good route." } },
+    { id: "e17922370951789gkp", leaf: "out-f", date: "2026-10-15", v: { reps: "4" }, at: 1792237095178 },
+    { id: "seed25", leaf: "out-log", date: "2026-10-16", v: { text: "Tallat, roig, Dalma. Aim was to fall 10x and work a 6b/+ three or four times really clean. The 6b after the warm up was impossible. Three hours on the first three clips, did not have it in me to finish." } },
+    { id: "e1792237085555grsn", leaf: "out-f", date: "2026-10-16", v: { reps: "10" }, at: 1792237085555 },
+    { id: "e1792259855549l5g0", leaf: "out-f", date: "2026-10-17", v: { reps: "3" }, at: 1792259855549 },
+    { id: "e1792259913175nzc2", leaf: "out-log", date: "2026-10-17", v: { text: "Dws. First freestyle low grade heart rate high, then commited to it and was good although tense. Then tried the harder section but the down climbing was hard so just had fun and fell/ jumped" }, at: 1792259913175 },
+    { id: "e1792521411333otdv", leaf: "lo1a", date: "2026-10-20", v: { weight: "20", reps: "15,15" }, at: 1792521411333 },
+    { id: "e1792521419109kcz5", leaf: "lo3a", date: "2026-10-20", v: { reps: "15,15" }, at: 1792521419109 },
+    { id: "e1792521422956y2e3", leaf: "lo1b", date: "2026-10-20", v: { reps: "15,15" }, at: 1792521422956 },
+    { id: "e179252187812597nw", leaf: "m1a", date: "2026-10-20", v: { mins: "5" }, at: 1792521878125 },
+    { id: "e179252212369223ya", leaf: "m2a", date: "2026-10-20", v: { mins: "2.5" }, at: 1792522123692 },
+    { id: "e1792522217819tlwn", leaf: "wu-dh", date: "2026-10-20", v: { reps: "6" }, at: 1792522217819 },
+    { id: "e17925636732366n7l", leaf: "gl-fig4foam", date: "2026-10-20", v: { mins: "2.5" }, at: 1792563673238 },
+    { id: "e1792563704226x1om", leaf: "mb-foam", date: "2026-10-20", v: { mins: "5" }, at: 1792563704226 },
+    { id: "e17925673267679p1h", leaf: "hm-long", date: "2026-10-21", v: { mins: "7" }, at: 1792567326767 },
+    { id: "e1792567606986ce1s", leaf: "gl-child", date: "2026-10-21", v: { mins: "3.3" }, at: 1792567606986 },
+    { id: "e1792567967593bts4", leaf: "ih-baby", date: "2026-10-21", v: { mins: "2.5" }, at: 1792567967594 },
+    { id: "e1792567986562qqg0", leaf: "gl-fig4", date: "2026-10-21", v: { mins: "2.5" }, at: 1792567986562 },
+    { id: "e1792572819239kuzj", leaf: "rn-a", date: "2026-10-21", v: { distance: "3.75", time: "21.29", desc: "" }, at: 1792572819239 },
+    { id: "e179260326031230e8", leaf: "wu-fb", date: "2026-10-21", v: { reps: "4,3" }, at: 1792603260312 },
+    { id: "e1792928663777si9k", leaf: "hm-cork", date: "2026-10-24", v: { mins: "1" }, at: 1792928663777 },
+    { id: "e1792925678439keiu", leaf: "up1", date: "2026-10-25", v: { weight: "18", reps: "10,10,10" }, at: 1792925678439 },
+    { id: "e1792925687096s4uf", leaf: "up8", date: "2026-10-25", v: { weight: "6", reps: "10,10,10" }, at: 1792925687096 },
+    { id: "e1792926474197t7sj", leaf: "up9", date: "2026-10-25", v: { weight: "12", reps: "12,12,12" }, at: 1792926474197 },
+    { id: "e17929264916260dri", leaf: "up3", date: "2026-10-25", v: { weight: "12", reps: "8,10,8" }, at: 1792926491626 },
+    { id: "e1792926910045ktz4", leaf: "lo2w", date: "2026-10-25", v: { reps: "20,16" }, at: 1792926910045 },
+    { id: "e1792927407262b9e3", leaf: "lo2b", date: "2026-10-25", v: { weight: "6.75", reps: "15,15,15" }, at: 1792927407262 },
+    { id: "e17929274149078smp", leaf: "lo2c", date: "2026-10-25", v: { reps: "10,10,10" }, at: 1792927414907 },
+    { id: "e17929275864625wq8", leaf: "ab4", date: "2026-10-25", v: { reps: "5,5,5" }, at: 1792927586462 },
+    { id: "e1792927889386x01q", leaf: "ab1", date: "2026-10-25", v: { reps: "2.5" }, at: 1792927889386 },
+    { id: "e179292796153990qs", leaf: "ab2", date: "2026-10-25", v: { reps: "20" }, at: 1792927961539 },
+    { id: "e17929286529170at7", leaf: "hm-single", date: "2026-10-25", v: { mins: "2.5" }, at: 1792928652917 },
+    { id: "e1792929145155b2e3", leaf: "mb-foam", date: "2026-10-25", v: { mins: "7" }, at: 1792929145155 },
+    { id: "e1793126769731ij8f", leaf: "lo1w", date: "2026-10-27", v: { reps: "6" }, at: 1793126769731 },
+    { id: "e1793127294063ep9v", leaf: "lo3b", date: "2026-10-27", v: { reps: "60,60,60,60" }, at: 1793127294063 },
+    { id: "e1793127651493w2pw", leaf: "lo3c", date: "2026-10-27", v: { reps: "15,15" }, at: 1793127651493 },
+    { id: "e179312861350887u7", leaf: "up11", date: "2026-10-27", v: { reps: "32,8,8,8" }, at: 1793128613508 },
+    { id: "e1793128622551uoc8", leaf: "up7", date: "2026-10-27", v: { reps: "10,10,10" }, at: 1793128622551 },
+    { id: "e1793129516087lovz", leaf: "up12", date: "2026-10-27", v: { weight: "6", reps: "10,10,10" }, at: 1793129516087 },
+    { id: "e1793129658026cjvk", leaf: "up10", date: "2026-10-27", v: { reps: "8" }, at: 1793129658026 },
+    { id: "e17931297621900gde", leaf: "up4", date: "2026-10-27", v: { weight: "6", reps: "6" }, at: 1793129762190 },
+    { id: "e1793130288939mr37", leaf: "up5", date: "2026-10-27", v: { weight: "2", reps: "40" }, at: 1793130288939 },
+    { id: "e1793130293894006z", leaf: "up6", date: "2026-10-27", v: { weight: "6", reps: "40" }, at: 1793130293894 },
+    { id: "e1793177851954v0my", leaf: "gl-child", date: "2026-10-28", v: { mins: "5" }, at: 1793177851954 },
+    { id: "e179317813433166di", leaf: "gl-fig4", date: "2026-10-28", v: { mins: "4" }, at: 1793178134331 },
+    { id: "e1793297046751hjc7", leaf: "rn-a", date: "2026-10-28", v: { distance: "5", time: "29.01", desc: "" }, at: 1793297046751 },
+    { id: "e1793298544218sotk", leaf: "ab2", date: "2026-10-29", v: { reps: "26,26,26" }, at: 1793298544218 },
+    { id: "e1793298683070wqbe", leaf: "ab1", date: "2026-10-29", v: { mins: "1,1" }, at: 1793298683070 },
+    { id: "e1793298789019hnxt", leaf: "ab3", date: "2026-10-29", v: { reps: "3,4,3" }, at: 1793298789019 },
+    { id: "e1793299308744k760", leaf: "up1", date: "2026-10-29", v: { weight: "20", reps: "8,10,8" }, at: 1793299308744 },
+    { id: "e17932993157598jta", leaf: "up8", date: "2026-10-29", v: { weight: "8", reps: "10,10,10" }, at: 1793299315759 },
+    { id: "e1793299846161swdd", leaf: "up9", date: "2026-10-29", v: { weight: "12", reps: "13,13,14" }, at: 1793299846161 },
+    { id: "e1793299852605q3lt", leaf: "up3", date: "2026-10-29", v: { weight: "12", reps: "11,11,12" }, at: 1793299852605 },
+    { id: "e1793302483433vzfb", leaf: "lo3a", date: "2026-10-29", v: { reps: "10,10,10" }, at: 1793302483435 },
+    { id: "e1793302491608ckrd", leaf: "lo1b", date: "2026-10-29", v: { reps: "15,15,15" }, at: 1793302491608 },
+    { id: "e17933025028429n2v", leaf: "lo1a", date: "2026-10-29", v: { weight: "30", reps: "12,12,12,12" }, at: 1793302502842 },
+    { id: "e17933030748039l85", leaf: "gl-fig4", date: "2026-10-29", v: { mins: "6" }, at: 1793303074803 },
+    { id: "e1793303325375kj89", leaf: "hq-nordic", date: "2026-10-29", v: { mins: "45,30" }, at: 1793303325375 },
+    { id: "e1793303540729y411", leaf: "mb-pancake", date: "2026-10-29", v: { mins: "3" }, at: 1793303540729 },
+    { id: "e1793311361921b1hw", leaf: "rn-b", date: "2026-10-29", v: { distance: "3.4", time: "22.3", desc: "" }, at: 1793311361921 },
+    { id: "e1793436832801wziy", leaf: "cs-side", date: "2026-10-31", v: { mins: "2" }, at: 1793436832801 },
+    { id: "e1793437414010mqjh", leaf: "hm-wide", date: "2026-10-31", v: { mins: "6.45" }, at: 1793437414010 },
+    { id: "e1793462489607iqga", leaf: "rn-a", date: "2026-10-31", v: { distance: "5", time: "29.1", desc: "" }, at: 1793462489607 },
+    { id: "e1793541678811g79s", leaf: "wu-fbc", date: "2026-11-01", v: { reps: "10" }, at: 1793541678812 },
+    { id: "e1793606577337y61a", leaf: "up11", date: "2026-11-02", v: { reps: "36.6,10,10,10" }, at: 1793606577337 },
+    { id: "e1793606992309fem9", leaf: "up7", date: "2026-11-02", v: { reps: "10,10" }, at: 1793606992309 },
+    { id: "e17936075293371oj0", leaf: "up12", date: "2026-11-02", v: { weight: "6", reps: "12,12,12,12" }, at: 1793607529337 },
+    { id: "e1793607544708div1", leaf: "up6", date: "2026-11-02", v: { weight: "6", reps: "12,12,12,12" }, at: 1793607544708 },
+    { id: "e1793608157629b9xi", leaf: "up5", date: "2026-11-02", v: { weight: "2", reps: "12,12,12,15" }, at: 1793608157629 },
+    { id: "e1793608172050gm17", leaf: "up4", date: "2026-11-02", v: { weight: "6", reps: "10,10,10,10" }, at: 1793608172050 },
+    { id: "e17936086508457gqy", leaf: "up10", date: "2026-11-02", v: { reps: "5,5,5" }, at: 1793608650845 },
+    { id: "e1793608972288t3ju", leaf: "mb-foam", date: "2026-11-02", v: { mins: "4" }, at: 1793608972288 },
+    { id: "e1793608997489vf93", leaf: "mb-pancake", date: "2026-11-02", v: { mins: "2,2" }, at: 1793608997489 },
+    { id: "e1793609323245or5f", leaf: "ih-frog", date: "2026-11-02", v: { mins: "3" }, at: 1793609323245 }
   ];
 
   var entries = [];
@@ -345,7 +398,10 @@ try { if (navigator.storage && navigator.storage.persist) {
     }
     if (leaf.metric === 'weight') {
       var vl = volumeLoad(v);
-      return vl ? vl + ' kg lifted' : null;
+      if (vl) return vl + ' kg lifted';
+      // bodyweight, or logged before this exercise took a weight
+      var rr = nums(v.reps);
+      return rr.length ? rr.reduce(function (a, b) { return a + b; }, 0) + ' reps' : null;
     }
     if (leaf.metric === 'hold') {
       var h = nums(minsOf(v));
@@ -1023,6 +1079,7 @@ try { if (navigator.storage && navigator.storage.persist) {
     } catch (err) {}
   }
   var actx = null;
+  var LEVEL = 0.75;               // the one volume, as a share of full scale
   var comp = null;
   function audioOut() {
     // a limiter lets us push close to full scale without the crackle of clipping
@@ -1045,7 +1102,7 @@ try { if (navigator.storage && navigator.storage.persist) {
         o.connect(g); g.connect(out);
         o.frequency.value = pair[0];
         o.type = 'square';            // richer in harmonics, so it carries over gym noise
-        var peak = pair[1];
+        var peak = pair[1] * LEVEL;
         g.gain.setValueAtTime(0.0001, t0);
         g.gain.exponentialRampToValueAtTime(peak, t0 + 0.004);   // fast attack, no click
         g.gain.setValueAtTime(peak, t0 + dur * 0.6);
