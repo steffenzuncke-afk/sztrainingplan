@@ -492,10 +492,11 @@ try { if (navigator.storage && navigator.storage.persist) {
     return '\u2014';
   }
 
-  function spark(leaf, w, h) {
+  function spark(leaf, w, h, valOf) {
     var es = entriesFor(leaf.id).slice(0, 12).reverse();
     if (es.length < 2) return '';
-    var vals = es.map(function (e) { return score(leaf, e); });
+    var f = valOf || function (e) { return score(leaf, e); };
+    var vals = es.map(f);
     var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
     var span = (hi - lo) || 1;
     var pts = vals.map(function (v, i) {
@@ -523,9 +524,44 @@ try { if (navigator.storage && navigator.storage.persist) {
     return order.map(function (g) { return { grade: g, n: tally[g] }; });
   }
 
+  // one labelled chart: a sparkline, a heading and a line of context
+  function chartRow(leaf, label, valOf, caption) {
+    var sv = spark(leaf, 260, 46, valOf);
+    if (!sv) return '';
+    return '<div class="prog-chart">' +
+      '<div class="prog-head"><span class="prog-lab">' + esc(label) + '</span>' +
+      '<span class="prog-fig">' + esc(caption.big) +
+      ' <small>' + esc(caption.small) + '</small></span></div>' +
+      '<div class="prog-spark prog-tall">' + sv + '</div></div>';
+  }
+
+  function runProgress(leaf) {
+    var es = entriesFor(leaf.id);
+    var kms = es.map(function (e) { return parseFloat(e.v.distance) || 0; });
+    var paces = es.map(function (e) {
+      var d = parseFloat(e.v.distance) || 0, t = secs(e.v.time);
+      return d && t ? t / d : null;
+    }).filter(function (x) { return x !== null; });
+    var total = kms.reduce(function (a, b) { return a + b; }, 0);
+    var h = '<div class="prog">';
+    h += chartRow(leaf, 'Speed', null, {
+      big: paces.length ? fmtMin(Math.round(Math.min.apply(null, paces))) + ' /km' : '\u2014',
+      small: 'best pace'
+    });
+    h += chartRow(leaf, 'Distance', function (e) { return parseFloat(e.v.distance) || 0; }, {
+      big: (Math.round(Math.max.apply(null, kms) * 100) / 100) + 'km',
+      small: 'furthest'
+    });
+    h += '<div class="prog-line">' + es.length + ' run' + (es.length === 1 ? '' : 's') +
+      ' since ' + shortDate(es[es.length - 1].date) + ' \u00b7 <b>' +
+      (Math.round(total * 10) / 10) + 'km</b> in all</div>';
+    return h + '</div>';
+  }
+
   function progress(leaf) {
     var es = entriesFor(leaf.id);
     if (!es.length) return '';
+    if (leaf.metric === 'run' && es.length > 1) return runProgress(leaf);
     var h = '<div class="prog">';
     var sv = spark(leaf, 220, 34);
     if (sv) {
@@ -1079,7 +1115,7 @@ try { if (navigator.storage && navigator.storage.persist) {
     } catch (err) {}
   }
   var actx = null;
-  var LEVEL = 0.75;               // the one volume, as a share of full scale
+  var LEVEL = 0.66;               // the one volume, as a share of full scale
   var comp = null;
   function audioOut() {
     // a limiter lets us push close to full scale without the crackle of clipping
