@@ -67,7 +67,7 @@ try { if (navigator.storage && navigator.storage.persist) {
           { id: 'pe-b', name: 'Traverse, both walls', metric: 'volume', retired: true },
           { id: 'pe-c', name: 'Boulders level 5', metric: 'volume', retired: true }
         ]},
-        { id: 'sk', name: 'Pushing Max Skill', target: 1, kind: 'pick', metricLabel: 'sent vs tried', children: [
+        { id: 'sk', name: 'Pushing Max Skill - number of good attempts', target: 1, kind: 'pick', metricLabel: 'sent vs tried', children: [
           { id: 'sk-a', name: 'Boulder 6 / 7', metric: 'sends' },
           { id: 'sk-b', name: 'Lead 7a & +', metric: 'sends' },
           { id: 'sk-c', name: 'AB 7a & +', metric: 'sends' }
@@ -124,24 +124,25 @@ try { if (navigator.storage && navigator.storage.persist) {
         { id: 'm1', name: 'Lower & Middle Back Mobility', target: 1, kind: 'all', children: [
           { id: 'mb-foam', name: 'Foam roller', metric: 'hold' },
           { id: 'mb-sphinx', name: 'Sphinx pose', metric: 'hold', note: 'arms more forward' },
-          { id: 'mb-pancake', name: 'Pancake', metric: 'hold', note: 'sit and hold' },
           { id: 'mb-arch', name: 'Arched back, bikram style', metric: 'hold', note: 'back and sides — standing, on knees or sitting' },
           { id: 'mb-twist', name: 'Side twists', metric: 'hold', retired: true },
           { id: 'm1a', name: 'Lower & middle back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
         { id: 'm2', name: 'Glutes / Arched Back', target: 1, kind: 'all', children: [
-          { id: 'gl-fig4', name: 'Figure 4', metric: 'hold' },
-          { id: 'gl-pigeon', name: 'Pigeon raise', metric: 'hold' },
-          { id: 'gl-fig4foam', name: 'Figure 4 + foam', metric: 'hold' },
-          { id: 'gl-yogi', name: 'Sitting yogi style', metric: 'hold' },
-          { id: 'gl-child', name: 'Cross leg child pose', metric: 'hold' },
+          { id: 'gl-fig4', name: 'Figure 4', metric: 'hold', note: 'against wall' },
+          { id: 'gl-pigeon', name: 'Pigeon pose', metric: 'hold' },
+          { id: 'gl-child', name: 'Sitting yogi style / cross legged childs pose', metric: 'hold' },
+          { id: 'gl-childhold', name: 'Child pose', metric: 'hold', note: 'hold, relax back & glutes' },
+          { id: 'gl-fig4foam', name: 'Figure 4 + foam', metric: 'hold', retired: true },
+          { id: 'gl-yogi', name: 'Sitting yogi style', metric: 'hold', retired: true },
           { id: 'm2a', name: 'Glutes / arched back', metric: 'hold', note: 'whole block, before it was split', retired: true }
         ]},
         { id: 'm3', name: 'Hamstring', target: 1, kind: 'all', children: [
           { id: 'hm-cork', name: 'Cork ball', metric: 'hold', note: 'use it more, it gives a lot' },
           { id: 'hm-single', name: 'Single leg forward fold', metric: 'hold' },
-          { id: 'hm-jeff', name: 'Jefferson curl', metric: 'hold' },
-          { id: 'hm-long', name: 'Forward fold long', metric: 'hold' }
+          { id: 'mb-pancake', name: 'Pancake', metric: 'hold', note: 'sit and hold' },
+          { id: 'hm-long', name: 'Forward fold long', metric: 'hold', note: 'standing or on floor' },
+          { id: 'hm-jeff', name: 'Jefferson curl', metric: 'hold', retired: true }
         ]},
         { id: 'm4', name: 'Inner Thigh / Groin', target: 1, kind: 'all', children: [
           { id: 'ih-baby', name: 'Happy baby', metric: 'hold' },
@@ -149,8 +150,8 @@ try { if (navigator.storage && navigator.storage.persist) {
           { id: 'ih-vwall', name: 'V against wall', metric: 'hold' },
           { id: 'hm-wide', name: 'Wide splits forward fold', metric: 'hold' }
         ]},
-        { id: 'm5', name: 'Hip Flexor w/ Quad', target: 1, kind: 'all', children: [
-          { id: 'hq-lunge', name: 'Low lunge + quad', metric: 'hold' },
+        { id: 'm5', name: 'Hip Flexor / Quad', target: 1, kind: 'all', children: [
+          { id: 'hq-lunge', name: 'Lizard pose + quad', metric: 'hold' },
           { id: 'hq-nordic', name: 'Nordic hip flexor', metric: 'hold' },
           { id: 'hq-sit', name: 'Sitting on legs, leaning backwards', metric: 'hold' }
         ]},
